@@ -16,12 +16,11 @@ namespace QuestionReaction.Data.Model
 
         // clefs etrangeres
         #region FK
-        [Required]
-        public int ChoiceId { get; set; }
-        [Required]
-        public int UserId { get; set; }
-        [Required]
-        public int QuestionId { get; set; }
+        // clefs non requises et nullable car seul moyen d'éviter que EF ne considère de boucles entre les tables
+        // erreur en question : "Introducing FOREIGN KEY constraint [...] may cause cycles or multiple cascade paths. [...]"
+        public int? ChoiceId { get; set; }
+        public int? UserId { get; set; }
+        public int? QuestionId { get; set; }
         #endregion
 
         // liens hors BDD
