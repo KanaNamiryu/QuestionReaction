@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QuestionReaction.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,19 @@ namespace QuestionReaction.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                // cn = bdd locale
+                var cn = Configuration.GetConnectionString("cn");
+                options.UseSqlServer(cn)
+#if DEBUG
+                .EnableSensitiveDataLogging();
+#endif
+            });
+
+
+
+
             services.AddControllersWithViews();
         }
 
