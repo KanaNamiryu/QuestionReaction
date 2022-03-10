@@ -19,4 +19,8 @@
     <ProjectReference Include="..\QuestionReaction.Services\QuestionReaction.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\User\" />
+  </ItemGroup>
+
 </Project>

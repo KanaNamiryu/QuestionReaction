@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Inscription";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Inscription</h1>
+</div>
+
+<hr />
+
+<div class="col-6 m-auto justify-content-around">
+    <form>
+        <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+        <div class="form-group">
+            <label for="mail">E-mail</label>
+            <input type="email" class="form-control" id="mail" required>
+        </div>
+        <div class="form-group">
+            <label for="mailConf">Confirmer l'e-mail</label>
+            <input type="email" class="form-control" id="mailConf" required>
+        </div>
+        
+
+        <div class="form-group">
+            <label for="login">Identifiant</label>
+            <input type="text" class="form-control" id="login" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" class="form-control" id="password" required>
+        </div>
+        <div class="form-group">
+            <label for="passwordConf">Confirmer le mot de passe</label>
+            <input type="password" class="form-control" id="passwordConf" required>
+        </div>
+
+        <div class="form-row ml-auto">
+            <button type="submit" class="btn btn-primary ml-auto">Inscription</button>
+        </div>
+    </form>
+</div>
