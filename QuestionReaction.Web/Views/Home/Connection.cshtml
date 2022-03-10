@@ -8,22 +8,24 @@
 
 <hr />
 
-<div class="col-5 m-auto justify-content-around">
+<div class="col-6 m-auto justify-content-around">
     <form>
         <div class="form-group">
-            <label for="exampleInputEmail1">Identifiant</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <label for="login" class="col-form-label col-form-label-lg">Identifiant</label>
+            <input type="text" class="form-control form-control-lg" id="login">
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Mot de passe</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
+            <label for="password" class="col-form-label col-form-label-lg">Mot de passe</label>
+            <input type="password" class="form-control form-control-lg" id="password">
         </div>
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Rester connecter</label>
+        <div class="form-group form-check form-row">
+            <div class="col align-self-center align-self-lg-center">
+                <input type="checkbox" class="form-check-input" id="stayLogin">
+            </div>
+            <label class="form-check-label col-form-label-lg" for="stayLogin">Rester connecter</label>
         </div>
         <div class="form-row ml-auto">
-            <button type="submit" class="btn btn-primary ml-auto">Connexion</button>
+            <button type="submit" class="btn btn-dark btn-lg ml-auto">Connexion</button>
         </div>
     </form>
 </div>
