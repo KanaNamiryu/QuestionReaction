@@ -28,6 +28,16 @@ namespace QuestionReaction.Web.Controllers
             return View();
         }
 
+        public IActionResult Connection()
+        {
+            return View();
+        }
+
+        public IActionResult Registration()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
