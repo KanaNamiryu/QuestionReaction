@@ -8,4 +8,8 @@
     <ProjectReference Include="..\QuestionReaction.Data\QuestionReaction.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

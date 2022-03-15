@@ -28,7 +28,7 @@ namespace QuestionReaction.Web.Controllers
             return View();
         }
 
-        public IActionResult Connection()
+        public IActionResult Login()
         {
             return View();
         }
