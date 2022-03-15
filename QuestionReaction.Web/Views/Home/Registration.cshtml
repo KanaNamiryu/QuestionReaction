@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Inscription";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Inscription</h1>
+</div>
+
+<hr />
+
+<div class="col-6 m-auto justify-content-around">
+    <form>
+        <div class="form-group">
+            <label for="name" class="col-form-label-lg">Nom</label>
+            <input type="text" class="form-control form-control-lg" id="name">
+        </div>
+        <div class="form-group">
+            <label for="mail" class="col-form-label-lg">E-mail</label>
+            <input type="email" class="form-control form-control-lg" id="mail" required>
+        </div>
+        <div class="form-group">
+            <label for="mailConf" class="col-form-label-lg">Confirmer l'e-mail</label>
+            <input type="email" class="form-control form-control-lg" id="mailConf" required>
+        </div>
+        
+
+        <div class="form-group">
+            <label for="login" class="col-form-label-lg">Identifiant</label>
+            <input type="text" class="form-control form-control-lg" id="login" required>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-form-label-lg">Mot de passe</label>
+            <input type="password" class="form-control form-control-lg" id="password" required>
+        </div>
+        <div class="form-group">
+            <label for="passwordConf" class="col-form-label-lg">Confirmer le mot de passe</label>
+            <input type="password" class="form-control form-control-lg" id="passwordConf" required>
+        </div>
+
+        <div class="form-row ml-auto">
+            <button type="submit" class="btn btn-dark btn-lg ml-auto">Inscription</button>
+        </div>
+    </form>
+</div>
