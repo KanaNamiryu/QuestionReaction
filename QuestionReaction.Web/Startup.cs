@@ -37,13 +37,29 @@ namespace QuestionReaction.Web
 #endif
             });
 
+            // configurer l'authentification par cookies (un "AddAuthentication" pour toutes les méthodes de connexions (un . par méthode apres))
+            services.AddAuthentication("Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    //config de l'authentification
+                    options.LoginPath = "/home/login";
+                    options.AccessDeniedPath = "/home/accesDenied";
+                    options.ReturnUrlParameter = "returnUrl";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+
+                    // config du cookie
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.IsEssential = true;
+                });
+
+
+
             // ajout des services au conteneur de DI (Dependence Injection)
             services.AddScoped<ILoginService, LoginService>();
 
 
             // permet l'acces au IHttpContextAccessor (contexte http)
             services.AddHttpContextAccessor();
-
 
             services.AddControllersWithViews();
         }
