@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QuestionReaction.Data;
+using QuestionReaction.Services;
+using QuestionReaction.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +37,29 @@ namespace QuestionReaction.Web
 #endif
             });
 
+            // configurer l'authentification par cookies (un "AddAuthentication" pour toutes les méthodes de connexions (un . par méthode apres))
+            services.AddAuthentication("Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    //config de l'authentification
+                    options.LoginPath = "/home/login";
+                    options.AccessDeniedPath = "/home/accesDenied";
+                    options.ReturnUrlParameter = "returnUrl";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+
+                    // config du cookie
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.IsEssential = true;
+                });
 
 
+
+            // ajout des services au conteneur de DI (Dependence Injection)
+            services.AddScoped<ILoginService, LoginService>();
+
+
+            // permet l'acces au IHttpContextAccessor (contexte http)
+            services.AddHttpContextAccessor();
 
             services.AddControllersWithViews();
         }
@@ -57,10 +80,16 @@ namespace QuestionReaction.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            // charger le service de routage en mémoire (ne l'utilise pas encore)
             app.UseRouting();
 
+            // authentification
+            app.UseAuthentication();
+
+            // si utilisateur authentifié → donne l'autorisation
             app.UseAuthorization();
 
+            // redirection de l'utilisateur selon autorisation
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
