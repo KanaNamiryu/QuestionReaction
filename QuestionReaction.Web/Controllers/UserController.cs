@@ -10,10 +10,13 @@ namespace QuestionReaction.Web.Controllers
         {
             _logger = logger;
         }
-        public IActionResult Questions()
+
+        public IActionResult Sondages()
         {
             return View();
         }
+
+
 
     }
 }

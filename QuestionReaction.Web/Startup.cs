@@ -58,6 +58,7 @@ namespace QuestionReaction.Web
             // ajout des services au conteneur de DI (Dependence Injection)
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<IHashService, HashService>();
+            services.AddScoped<IRegisterService, RegisterService>();
 
 
             // permet l'acces au IHttpContextAccessor (contexte http)

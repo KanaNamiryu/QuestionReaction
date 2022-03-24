@@ -15,11 +15,13 @@ namespace QuestionReaction.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ILoginService _loginService;
+        private readonly IRegisterService _registerService;
 
-        public HomeController(ILogger<HomeController> logger, ILoginService loginService)
+        public HomeController(ILogger<HomeController> logger, ILoginService loginService, IRegisterService registerService)
         {
             _logger = logger;
             _loginService = loginService;
+            _registerService = registerService;
         }
 
         public async Task<IActionResult> Index()
@@ -75,10 +77,32 @@ namespace QuestionReaction.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Registration()
+        [HttpPost]
+        public async Task<IActionResult> Registration(RegisterVM model)
         {
-
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                bool isRegister = await _registerService.RegisterAsync(model.Name, model.Mail, model.Login, model.Password);
+                if (isRegister)
+                {
+                    if (!string.IsNullOrEmpty(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(/*Sondages*/Index),nameof(UserController)); // a corriger avec "sondages"
+                    }
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
