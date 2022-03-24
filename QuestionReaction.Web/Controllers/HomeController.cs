@@ -77,6 +77,7 @@ namespace QuestionReaction.Web.Controllers
 
         public async Task<IActionResult> Registration()
         {
+
             return View();
         }
 

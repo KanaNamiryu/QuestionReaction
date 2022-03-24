@@ -8,8 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
-using System.Security.Cryptography;
 using QuestionReaction.Data;
+using QuestionReaction.Data.Interfaces;
 
 namespace QuestionReaction.Services
 {
@@ -17,11 +17,13 @@ namespace QuestionReaction.Services
     {
         private readonly HttpContext _httpContext;
         private readonly AppDbContext _ctx;
+        private readonly IHashService _hashService;
 
-        public LoginService(IHttpContextAccessor contextAccessor, AppDbContext ctx)
+        public LoginService(IHttpContextAccessor contextAccessor, AppDbContext ctx, IHashService hashService)
         {
             _httpContext = contextAccessor.HttpContext;
             _ctx = ctx;
+            _hashService = hashService;
         }
 
         public async Task<bool> LoginAsync(string login, string password, bool rememberMe)
@@ -30,7 +32,7 @@ namespace QuestionReaction.Services
             var u = _ctx.Users.SingleOrDefault(u => u.Login == login);
             if (u != null)
             {
-                var hash = HashPassword(password);
+                var hash = _hashService.HashPassword(password);
                 if (u.Password == hash)
                 {
                     // enregistrer les infos sous forme de claim
@@ -57,27 +59,6 @@ namespace QuestionReaction.Services
         public async Task LogoutAsync()
         {
             await _httpContext.SignOutAsync();
-        }
-
-        private string HashPassword(string clearPwd)
-        {
-            if (string.IsNullOrEmpty(clearPwd))
-                return string.Empty;
-
-            byte[] tmpSource;
-            byte[] tmpHash;
-
-            tmpSource = Encoding.ASCII.GetBytes(clearPwd);
-            using (var sha = SHA256.Create())
-            {
-                tmpHash = sha.ComputeHash(tmpSource);
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < tmpHash.Length; i++)
-                {
-                    sb.Append(tmpHash[i].ToString("X2"));
-                }
-                return sb.ToString();
-            }
         }
 
     }

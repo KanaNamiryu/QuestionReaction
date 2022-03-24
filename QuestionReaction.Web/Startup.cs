@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QuestionReaction.Data;
+using QuestionReaction.Data.Interfaces;
 using QuestionReaction.Services;
 using QuestionReaction.Services.Interfaces;
 using System;
@@ -56,6 +57,7 @@ namespace QuestionReaction.Web
 
             // ajout des services au conteneur de DI (Dependence Injection)
             services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IHashService, HashService>();
 
 
             // permet l'acces au IHttpContextAccessor (contexte http)
