@@ -24,19 +24,19 @@ namespace QuestionReaction.Web.Controllers
             _registerService = registerService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
 
         [Authorize]
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
             return View();
         }
 
         [HttpGet]
-        public IActionResult Login(string returnUrl)
+        public async Task<IActionResult> Login(string returnUrl)
         {
             var model = new LoginVM();
             model.ReturnUrl = returnUrl;
@@ -78,7 +78,7 @@ namespace QuestionReaction.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Registration(string returnUrl)
+        public async Task<IActionResult> Registration(string returnUrl)
         {
             var model = new RegisterVM();
             model.ReturnUrl = returnUrl;
@@ -114,7 +114,7 @@ namespace QuestionReaction.Web.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task<IActionResult> Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
