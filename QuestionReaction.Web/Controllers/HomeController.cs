@@ -15,26 +15,28 @@ namespace QuestionReaction.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ILoginService _loginService;
+        private readonly IRegisterService _registerService;
 
-        public HomeController(ILogger<HomeController> logger, ILoginService loginService)
+        public HomeController(ILogger<HomeController> logger, ILoginService loginService, IRegisterService registerService)
         {
             _logger = logger;
             _loginService = loginService;
+            _registerService = registerService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }
 
         [Authorize]
-        public async Task<IActionResult> Privacy()
+        public IActionResult Privacy()
         {
             return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Login(string returnUrl)
+        public IActionResult Login(string returnUrl)
         {
             var model = new LoginVM();
             model.ReturnUrl = returnUrl;
@@ -59,7 +61,7 @@ namespace QuestionReaction.Web.Controllers
                     }
                     else
                     {
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction("Sondages", "User");
                     }
                 }
                 else
@@ -75,9 +77,40 @@ namespace QuestionReaction.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Registration()
+        [HttpGet]
+        public IActionResult Registration(string returnUrl)
         {
-            return View();
+            var model = new RegisterVM();
+            model.ReturnUrl = returnUrl;
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Registration(RegisterVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                bool isRegister = await _registerService.RegisterAsync(model.Name, model.Mail, model.Login, model.Password);
+                if (isRegister)
+                {
+                    if (!string.IsNullOrEmpty(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(Login));
+                    }
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

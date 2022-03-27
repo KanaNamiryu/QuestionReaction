@@ -25,7 +25,7 @@ namespace QuestionReaction.Data.Model
         public string Login { get; set; }
 
         [Required]
-        [MaxLength(64)]
+        [MaxLength(256)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
