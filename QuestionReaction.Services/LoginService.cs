@@ -61,5 +61,18 @@ namespace QuestionReaction.Services
             await _httpContext.SignOutAsync();
         }
 
+        public async Task<User> GetCurrentUserAsync()
+        {
+            if (_httpContext.User.Claims.FirstOrDefault() == null)
+            {
+                return null;
+            }
+            else
+            {
+                var userId = _httpContext.User.Claims.Single(u => u.Type == "id").Value;
+                var user = _ctx.Users.Where(u => u.Id == int.Parse(userId)).FirstOrDefault();
+                return user;
+            }
+        }
     }
 }
