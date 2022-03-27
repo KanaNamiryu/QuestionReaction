@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using QuestionReaction.Data;
+﻿using QuestionReaction.Data;
 using QuestionReaction.Data.Interfaces;
 using QuestionReaction.Data.Model;
 using QuestionReaction.Services.Interfaces;
@@ -31,7 +29,7 @@ namespace QuestionReaction.Services
             {
                 if (name == null)
                 {
-                    name = "RandomUser"; // Nom a generer
+                    name = await NameGenerator(); // Nom a generer
                 }
 
                 var user = new User
@@ -50,5 +48,15 @@ namespace QuestionReaction.Services
             return false;
         }
 
+        public async Task<string> NameGenerator()
+        {
+            string name;
+            var names1 = new List<string>() { "Chat", "Oiseau", "Poisson", "Sanglier", "Chameau" };
+            var names2 = new List<string>() { "Étrange", "Amusant", "Botté", "Rapide", "Multicolor" };
+            Random random = new Random();
+
+            name = names1[random.Next(0, 5)] + names2[random.Next(0, 5)] + random.Next(1000,10000);
+            return name;
+        }
     }
 }
