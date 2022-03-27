@@ -34,6 +34,7 @@ namespace QuestionReaction.Web.Models
         [Compare(nameof (Password),ErrorMessage = "Les mots de passe doivent être identiques"),
             Display(Name = "Confirmer le mot de passe")]
         public string CheckPassword { get; set; }
+
         public string ReturnUrl { get; set; }
 
     }

@@ -15,16 +15,16 @@ namespace QuestionReaction.Services
 {
     public class LoginService : ILoginService
     {
-        private readonly HttpContext _httpContext;
-        private readonly AppDbContext _ctx;
-        private readonly IHashService _hashService;
-
         public LoginService(IHttpContextAccessor contextAccessor, AppDbContext ctx, IHashService hashService)
         {
             _httpContext = contextAccessor.HttpContext;
             _ctx = ctx;
             _hashService = hashService;
         }
+
+        private readonly HttpContext _httpContext;
+        private readonly AppDbContext _ctx;
+        private readonly IHashService _hashService;
 
         public async Task<bool> LoginAsync(string login, string password, bool rememberMe)
         {

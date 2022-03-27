@@ -24,19 +24,19 @@ namespace QuestionReaction.Web.Controllers
             _registerService = registerService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }
 
         [Authorize]
-        public async Task<IActionResult> Privacy()
+        public IActionResult Privacy()
         {
             return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Login(string returnUrl)
+        public IActionResult Login(string returnUrl)
         {
             var model = new LoginVM();
             model.ReturnUrl = returnUrl;
@@ -61,7 +61,7 @@ namespace QuestionReaction.Web.Controllers
                     }
                     else
                     {
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction("Sondages", "User");
                     }
                 }
                 else
@@ -75,6 +75,14 @@ namespace QuestionReaction.Web.Controllers
         {
             await _loginService.LogoutAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Registration(string returnUrl)
+        {
+            var model = new RegisterVM();
+            model.ReturnUrl = returnUrl;
+            return View(model);
         }
 
         [HttpPost]
@@ -95,7 +103,7 @@ namespace QuestionReaction.Web.Controllers
                     }
                     else
                     {
-                        return RedirectToAction(nameof(/*Sondages*/Index),nameof(UserController)); // a corriger avec "sondages"
+                        return RedirectToAction(nameof(Login));
                     }
                 }
                 else
