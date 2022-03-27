@@ -11,24 +11,36 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand lg" asp-area="" asp-controller="Home" asp-action="Index">Question Reaction</a>
+                <a class="navbar-brand lg" asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark col-form-label-lg" asp-area="" asp-controller="User" asp-action="Questions">Sondages</a>
-                        </li>
+                        @if (User.Claims.FirstOrDefault() != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark col-form-label-lg" asp-area="" asp-controller="User" asp-action="Questions">Sondages</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark col-form-label-lg" asp-area="" asp-controller="Home" asp-action="Login">Connexion</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark col-form-label-lg" asp-area="" asp-controller="Home" asp-action="Registration">Inscription</a>
-                        </li>
+                        @if (User.Claims.FirstOrDefault() != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark col-form-label-lg" asp-area="" asp-controller="Home" asp-action="Logout">Déconnexion</a>
+                            </li>
+                        }
+                        @if (User.Claims.FirstOrDefault() == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark col-form-label-lg" asp-area="" asp-controller="Home" asp-action="Login">Connexion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark col-form-label-lg" asp-area="" asp-controller="Home" asp-action="Registration">Inscription</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

@@ -3,8 +3,15 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Bienvenue !</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @if (User.Claims.FirstOrDefault() == null)
+    {
+        <h1 class="display-4">Bienvenue !</h1>
+    }
+    else
+    {
+        <h1 class="display-4">Bonjour @User.Claims.Single(u => u.Type == "name").Value !</h1>
+    }
+    <p>Vous allez bien ?</p>
 </div>
 
 <hr/>
