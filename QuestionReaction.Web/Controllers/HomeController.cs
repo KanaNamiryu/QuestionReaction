@@ -61,7 +61,7 @@ namespace QuestionReaction.Web.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Sondages", "User");
+                        return RedirectToAction("Polls", "User");
                     }
                 }
                 else

@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using QuestionReaction.Data.Model;
+using QuestionReaction.Services.Models;
+using System.Collections.Generic;
 
 namespace QuestionReaction.Web.Controllers
 {
@@ -11,12 +14,112 @@ namespace QuestionReaction.Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Sondages()
+        public IActionResult Polls()
+        {
+            var model = new UserPollsVM()
+            {
+                CreatedPolls = new List<Question>()
+                {
+                    new Question()
+                    {
+                        Title = "quest 1"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 2"
+                    }
+                },
+                JoinedPolls = new List<Question>()
+                {
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 3"
+                    },
+                    new Question()
+                    {
+                        Title = "quest 4"
+                    }
+                }
+            };
+            return View(model);
+        }
+
+        public IActionResult AddPolls()
         {
             return View();
         }
-
-
 
     }
 }

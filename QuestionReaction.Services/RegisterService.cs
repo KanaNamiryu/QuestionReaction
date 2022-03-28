@@ -29,7 +29,10 @@ namespace QuestionReaction.Services
             {
                 if (name == null)
                 {
-                    name = await NameGenerator(); // Nom a generer
+                    do
+                    {
+                        name = await NameGenerator();
+                    } while (name.Equals(_ctx.Users.SingleOrDefault(u => u.Name == name)));
                 }
 
                 var user = new User
