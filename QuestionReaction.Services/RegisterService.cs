@@ -54,8 +54,8 @@ namespace QuestionReaction.Services
         public async Task<string> NameGenerator()
         {
             string name;
-            var names1 = new List<string>() { "Chat", "Oiseau", "Poisson", "Sanglier", "Chameau" };
-            var names2 = new List<string>() { "Étrange", "Amusant", "Botté", "Rapide", "Multicolor" };
+            var names1 = new List<string>() { "Chat", "Oiseau", "Poisson", "Sanglier", "Chameau", "Lézard", "Tortue" };
+            var names2 = new List<string>() { "Étrange", "Amusant", "Botté", "Rapide", "Multicolore", "Rôti", "Templier" };
             Random random = new Random();
 
             name = names1[random.Next(0, 5)] + names2[random.Next(0, 5)] + random.Next(1000,10000);
