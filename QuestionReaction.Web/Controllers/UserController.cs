@@ -73,42 +73,6 @@ namespace QuestionReaction.Web.Controllers
                     },
                     new Question()
                     {
-                        Title = "quest 3"
-                    },
-                    new Question()
-                    {
-                        Title = "quest 3"
-                    },
-                    new Question()
-                    {
-                        Title = "quest 3"
-                    },
-                    new Question()
-                    {
-                        Title = "quest 3"
-                    },
-                    new Question()
-                    {
-                        Title = "quest 3"
-                    },
-                    new Question()
-                    {
-                        Title = "quest 3"
-                    },
-                    new Question()
-                    {
-                        Title = "quest 3"
-                    },
-                    new Question()
-                    {
-                        Title = "quest 3"
-                    },
-                    new Question()
-                    {
-                        Title = "quest 3"
-                    },
-                    new Question()
-                    {
                         Title = "quest 4"
                     }
                 }
