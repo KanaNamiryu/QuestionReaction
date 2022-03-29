@@ -80,9 +80,11 @@ namespace QuestionReaction.Web.Controllers
             return View(model);
         }
 
-        public IActionResult AddPolls()
+        public IActionResult AddPolls(string returnUrl)
         {
-            return View();
+            var model = new UserAddPollsVM();
+            model.ReturnUrl = returnUrl;
+            return View(model);
         }
 
     }
