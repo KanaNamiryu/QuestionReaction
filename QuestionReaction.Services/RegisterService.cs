@@ -23,6 +23,9 @@ namespace QuestionReaction.Services
 
         public async Task<bool> RegisterAsync(string name, string mail, string login, string password)
         {
+
+            // pour check validité mdp → check Regex (site : IHateRegex, regextester)
+
             var l = _ctx.Users.SingleOrDefault(u => u.Login == login);
             var m = _ctx.Users.SingleOrDefault(u => u.Mail == mail);
             if (l == null && m == null)
