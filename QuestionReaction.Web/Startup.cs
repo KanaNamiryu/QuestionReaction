@@ -59,6 +59,7 @@ namespace QuestionReaction.Web
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IRegisterService, RegisterService>();
+            services.AddScoped<IPollService, PollService>();
 
 
             // permet l'acces au IHttpContextAccessor (contexte http)

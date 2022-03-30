@@ -29,7 +29,6 @@ namespace QuestionReaction.Web.Controllers
             return View();
         }
 
-        [Authorize]
         public async Task<IActionResult> Privacy()
         {
             return View();
@@ -61,7 +60,7 @@ namespace QuestionReaction.Web.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Sondages", "User");
+                        return RedirectToAction("Polls", "User");
                     }
                 }
                 else

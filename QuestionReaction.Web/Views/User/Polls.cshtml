@@ -1,0 +1,68 @@
+﻿@model QuestionReaction.Services.Models.UserPollsVM
+@{
+    ViewData["Title"] = "Sondages";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Sondages</h1>
+</div>
+
+<hr />
+
+<div class="container">
+    <div class="row justify-content-around align-content-center">
+        <div class="col-6 p-2">
+            <h2 class="display-5">Vos sondages</h2>
+            <div class="overflow-auto border" style="max-height: 50%">
+                <table class="table table-sm table-borderless">
+                    <tbody>
+                        @foreach (var question in Model.CreatedPolls)
+                        {
+                            <tr>
+                                <td>
+                                    <label>@question.Title</label>
+                                    <hr style="margin: 0px" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-6 p-2">
+            <h2 class="display-5">Vos réactions</h2>
+            <div class="overflow-auto border" style="max-height: 50%">
+                <table class="table table-sm table-borderless">
+                    <tbody>
+                        @foreach (var question in Model.JoinedPolls)
+                        {
+                            <tr>
+                                <td>
+                                    <label>@question.Title</label>
+                                    <hr style="margin: 0px" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-around align-content-center">
+        <div class="col-6 p-2">
+            <div class="d-flex flex-column">
+                <div class="mx-auto"><p>Vous pouvez créer vos propres sondages ici !</p></div>
+                <div class="ml-auto"><a class="btn btn-dark" asp-controller="User" asp-action="AddPolls">Nouveau sondage</a></div>
+            </div>
+        </div>
+        <div class="col-6 p-2">
+            <div class="d-flex flex-column">
+                <div class="mx-auto"><p>Indiquez le code du sondage à auquel vous voulez réagir</p></div>
+                <form class="form-inline">
+                    <input class="form-control flex-grow-1" placeholder="Code du sondage">
+                    <button type="submit" class="btn btn-dark ml-2">Nouvelle réaction</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
