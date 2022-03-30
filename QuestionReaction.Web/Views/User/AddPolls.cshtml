@@ -11,7 +11,7 @@
 
 <div class="col-6 m-auto justify-content-around">
     <form>
-        <input type="hidden" name="returnUrl" id="returnUrl" value="@Model.ReturnUrl" />
+        <input type="hidden" name="currentUserId" id="currentUserId" value="@CurrentUserId" />
         <div class="form-group">
             <label asp-for="Title" class="col-form-label col-form-label-lg"></label>
             <input asp-for="Title" class="form-control form-control-lg">
@@ -27,7 +27,32 @@
             <label asp-for="MutipleChoices" class="form-check-label col-form-label-lg"></label>
         </div>
         <div>
-            Choix (5 par defaut ?)
+            <label class="col-form-label col-form-label-lg">Liste de choix</label>
+            <div class="form-group">
+                <label asp-for="Choice1" class="col-form-label col-form-label-lg"></label>
+                <input asp-for="Choice1" class="form-control form-control-lg">
+                <span asp-validation-for="Choice1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Choice2" class="col-form-label col-form-label-lg"></label>
+                <input asp-for="Choice2" class="form-control form-control-lg">
+                <span asp-validation-for="Choice2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Choice3" class="col-form-label col-form-label-lg"></label>
+                <input asp-for="Choice3" class="form-control form-control-lg">
+                <span asp-validation-for="Choice3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Choice4" class="col-form-label col-form-label-lg"></label>
+                <input asp-for="Choice4" class="form-control form-control-lg">
+                <span asp-validation-for="Choice4" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Choice5" class="col-form-label col-form-label-lg"></label>
+                <input asp-for="Choice5" class="form-control form-control-lg">
+                <span asp-validation-for="Choice5" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-row ml-auto">
             <button type="button" class="btn btn-dark btn-lg ml-auto">Annuler</button>

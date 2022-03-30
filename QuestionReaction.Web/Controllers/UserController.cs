@@ -1,19 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QuestionReaction.Data.Model;
+using QuestionReaction.Services.Interfaces;
 using QuestionReaction.Services.Models;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace QuestionReaction.Web.Controllers
 {
     public class UserController: Controller
     {
         private readonly ILogger<UserController> _logger;
-        public UserController(ILogger<UserController> logger)
+        private readonly IPollService _pollService;
+        public UserController(ILogger<UserController> logger, IPollService pollService)
         {
             _logger = logger;
+            _pollService = pollService;
         }
 
+        [Authorize]
         public IActionResult Polls()
         {
             var model = new UserPollsVM()
@@ -80,11 +87,28 @@ namespace QuestionReaction.Web.Controllers
             return View(model);
         }
 
-        public IActionResult AddPolls(string returnUrl)
+        [Authorize]
+        [HttpGet]
+        public IActionResult AddPolls()
         {
             var model = new UserAddPollsVM();
-            model.ReturnUrl = returnUrl;
+            model.CurrentUserId = int.Parse(User.Claims.Single(u => u.Type == "id").Value);
             return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddPolls(UserAddPollsVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                await _pollService.AddPollAsync(model);
+                return RedirectToAction(nameof(Polls)); // redirection a changer vers la page des liens
+            }
         }
 
     }

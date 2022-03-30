@@ -29,7 +29,6 @@ namespace QuestionReaction.Web.Controllers
             return View();
         }
 
-        [Authorize]
         public async Task<IActionResult> Privacy()
         {
             return View();
