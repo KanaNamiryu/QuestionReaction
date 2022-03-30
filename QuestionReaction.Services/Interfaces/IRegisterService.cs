@@ -9,6 +9,6 @@ namespace QuestionReaction.Services.Interfaces
     public interface IRegisterService
     {
         Task<bool> RegisterAsync(string name, string mail, string login, string password);
-        Task<string> NameGenerator();
+        string NameGenerator();
     }
 }
