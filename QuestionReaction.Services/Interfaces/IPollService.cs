@@ -16,16 +16,22 @@ namespace QuestionReaction.Services.Interfaces
         /// <param name="model"></param>
         Task AddPollAsync(UserAddPollsVM model);
         /// <summary>
-        /// Récuperation d'un sondage à partir de son uid de vote
-        /// </summary>
-        /// <param name="uid">Question.VoteUid</param>
-        /// <returns>sondage au format Question</returns>
-        Task<Question> GetPollByVoteUidAsync(string uid);
-        /// <summary>
         /// Créé un guid au format string sans les tirets
         /// </summary>
         /// <returns>guid au format string</returns>
         string AddGuid();
+        /// <summary>
+        /// Récupération des invités d'un sondage
+        /// </summary>
+        /// <param name="questionId">id du sondage</param>
+        /// <returns>Liste de Guest</returns>
+        Task<List<Guest>> GetGuestsByQuestionId(int questionId);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guestMail"></param>
+        /// <returns></returns>
+        Task<List<Question>> GetPollsByGuestMailAsync(string guestMail);
 
     }
 }

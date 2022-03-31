@@ -131,6 +131,24 @@ namespace QuestionReaction.Web.Controllers
                 }
             };
 
+            var user = _userService.GetUserByIdAsync(_currentUserId);
+
+            // liste des sondages auxquels l'utilisateur à été invité sauf ceux qu'il a créé
+            model.JoinedPolls = _ctx.Questions
+                .Where(q => q.UserId == user.Id)
+                .Select(q => new QuestionsVM()
+                {
+                    Id = q.Id,
+                    Title = q.Title,
+                    MultipleChoices = q.MultipleChoices,
+                    VoteUid = q.VoteUid,
+                    ResultUid = q.ResultUid
+                })
+                .ToList();
+
+            var guests = _pollService.GetGuestsByQuestionId(1);
+
+            // liste des sondages de l'utilisateur
             model.CreatedPolls = _ctx.Questions
                 .Where(q => q.UserId == user.Id)
                 .Select(q => new QuestionsVM()
