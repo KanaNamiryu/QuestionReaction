@@ -68,10 +68,8 @@ namespace QuestionReaction.Services
 
         public async Task<Question> GetPollByVoteUidAsync(string uid)
         {
-            var result = _ctx.Questions
+            return _ctx.Questions
                 .FirstOrDefault(q => q.VoteUid == uid);
-
-            return result;
         }
     }
 }
