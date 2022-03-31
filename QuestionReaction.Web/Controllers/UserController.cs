@@ -16,11 +16,14 @@ namespace QuestionReaction.Web.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly IPollService _pollService;
         private readonly AppDbContext _ctx;
-        public UserController(ILogger<UserController> logger, IPollService pollService, AppDbContext ctx)
+        private readonly IUserService _userService;
+        private int _currentUserId => int.Parse(User.Claims.Single(u => u.Type == "id").Value);
+        public UserController(ILogger<UserController> logger, IPollService pollService, AppDbContext ctx, IUserService userService)
         {
             _logger = logger;
             _pollService = pollService;
             _ctx = ctx;
+            _userService = userService;
         }
 
         [Authorize]
@@ -83,14 +86,53 @@ namespace QuestionReaction.Web.Controllers
                     },
                     new QuestionsVM()
                     {
+                        Title = "quest 3"
+                    },
+                    new QuestionsVM()
+                    {
+                        Title = "quest 3"
+                    },
+                    new QuestionsVM()
+                    {
+                        Title = "quest 3"
+                    },
+                    new QuestionsVM()
+                    {
+                        Title = "quest 3"
+                    },
+                    new QuestionsVM()
+                    {
+                        Title = "quest 3"
+                    },
+                    new QuestionsVM()
+                    {
+                        Title = "quest 3"
+                    },
+                    new QuestionsVM()
+                    {
+                        Title = "quest 3"
+                    },
+                    new QuestionsVM()
+                    {
+                        Title = "quest 3"
+                    },
+                    new QuestionsVM()
+                    {
+                        Title = "quest 3"
+                    },
+                    new QuestionsVM()
+                    {
+                        Title = "quest 3"
+                    },
+                    new QuestionsVM()
+                    {
                         Title = "quest 4"
                     }
                 }
             };
-            model.CurrentUserId = int.Parse(User.Claims.Single(u => u.Type == "id").Value);
 
             model.CreatedPolls = _ctx.Questions
-                .Where(q => q.UserId == model.CurrentUserId)
+                .Where(q => q.UserId == user.Id)
                 .Select(q => new QuestionsVM()
                 {
                     Id = q.Id,
@@ -107,8 +149,7 @@ namespace QuestionReaction.Web.Controllers
         [HttpGet]
         public IActionResult AddPolls()
         {
-            var model = new UserAddPollsVM();
-            model.CurrentUserId = int.Parse(User.Claims.Single(u => u.Type == "id").Value);
+            var model = new UserAddPollsVM() { CurrentUserId = _currentUserId };
             return View(model);
         }
 
