@@ -106,6 +106,12 @@ namespace QuestionReaction.Web.Controllers
             }
             else
             {
+                model.Choices = new List<string>
+                    {
+                        model.Choice1, model.Choice2, model.Choice3, model.Choice4, model.Choice5
+                    }
+                    .Where(c => c != null)
+                    .ToList();
                 await _pollService.AddPollAsync(model);
                 return RedirectToAction(nameof(Polls)); // redirection a changer vers la page des liens
             }
