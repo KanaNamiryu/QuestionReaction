@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using QuestionReaction.Data;
 using QuestionReaction.Data.Model;
 using QuestionReaction.Services.Interfaces;
 using QuestionReaction.Services.Models;
@@ -14,10 +15,12 @@ namespace QuestionReaction.Web.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IPollService _pollService;
-        public UserController(ILogger<UserController> logger, IPollService pollService)
+        private readonly AppDbContext _ctx;
+        public UserController(ILogger<UserController> logger, IPollService pollService, AppDbContext ctx)
         {
             _logger = logger;
             _pollService = pollService;
+            _ctx = ctx;
         }
 
         [Authorize]
@@ -25,65 +28,78 @@ namespace QuestionReaction.Web.Controllers
         {
             var model = new UserPollsVM()
             {
-                CreatedPolls = new List<Question>()
+                CreatedPolls = new List<QuestionsVM>()
                 {
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 1"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 2"
                     }
                 },
-                JoinedPolls = new List<Question>()
+                JoinedPolls = new List<QuestionsVM>()
                 {
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 3"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 3"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 3"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 3"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 3"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 3"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 3"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 3"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 3"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 3"
                     },
-                    new Question()
+                    new QuestionsVM()
                     {
                         Title = "quest 4"
                     }
                 }
             };
+            model.CurrentUserId = int.Parse(User.Claims.Single(u => u.Type == "id").Value);
+
+            model.CreatedPolls = _ctx.Questions
+                .Where(q => q.UserId == model.CurrentUserId)
+                .Select(q => new QuestionsVM()
+                {
+                    Id = q.Id,
+                    Title = q.Title,
+                    MultipleChoices = q.MultipleChoices,
+                    VoteUid = q.VoteUid,
+                    ResultUid = q.ResultUid
+                })
+                .ToList();
             return View(model);
         }
 
