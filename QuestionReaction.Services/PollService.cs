@@ -33,6 +33,8 @@ namespace QuestionReaction.Services
 
             await _ctx.AddAsync(question);
 
+            // save question avant de la chercher OU add choices dans la liste de choices de la question
+
             var questionId = GetPollByVoteUidAsync(question.VoteUid).Id;
 
             model.Choices
