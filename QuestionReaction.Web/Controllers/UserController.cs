@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace QuestionReaction.Web.Controllers
 {
+    [Authorize]
     public class UserController: Controller
     {
         private readonly ILogger<UserController> _logger;
@@ -26,7 +27,6 @@ namespace QuestionReaction.Web.Controllers
             _userService = userService;
         }
 
-        [Authorize]
         public IActionResult Polls()
         {
             var model = new UserPollsVM()
@@ -145,7 +145,6 @@ namespace QuestionReaction.Web.Controllers
             return View(model);
         }
 
-        [Authorize]
         [HttpGet]
         public IActionResult AddPolls()
         {
@@ -153,7 +152,6 @@ namespace QuestionReaction.Web.Controllers
             return View(model);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddPolls(UserAddPollsVM model)
         {

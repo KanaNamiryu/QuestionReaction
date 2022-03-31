@@ -11,7 +11,6 @@ namespace QuestionReaction.Services.Models
     {
         public List<QuestionsVM> CreatedPolls { get; set; }
         public List<QuestionsVM> JoinedPolls { get; set; }
-        public int CurrentUserId { get; set; }
 
     }
 
