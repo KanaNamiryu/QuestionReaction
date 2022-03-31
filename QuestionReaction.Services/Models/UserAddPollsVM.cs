@@ -37,9 +37,5 @@ namespace QuestionReaction.Services.Models
         public int CurrentUserId { get; set; }
 
         public List<string> Choices { get; set; }
-        public UserAddPollsVM()
-        {
-            Choices = (List<string>)new List<string> { Choice1, Choice2, Choice3, Choice4, Choice5 }.Where(c => c != null);
-        }
     }
 }

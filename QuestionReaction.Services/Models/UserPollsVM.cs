@@ -9,8 +9,19 @@ namespace QuestionReaction.Services.Models
 {
     public class UserPollsVM
     {
-        public List<Question> CreatedPolls { get; set; }
-        public List<Question> JoinedPolls { get; set; }
+        public List<QuestionsVM> CreatedPolls { get; set; }
+        public List<QuestionsVM> JoinedPolls { get; set; }
+        public int CurrentUserId { get; set; }
+
+    }
+
+    public struct QuestionsVM
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public bool MultipleChoices { get; set; }
+        public string VoteUid { get; set; }
+        public string ResultUid { get; set; }
 
     }
 }
