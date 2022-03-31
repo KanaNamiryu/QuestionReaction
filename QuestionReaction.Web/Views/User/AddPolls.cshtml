@@ -10,8 +10,8 @@
 <hr />
 
 <div class="col-6 m-auto justify-content-around">
-    <form>
-        <input type="hidden" name="currentUserId" id="currentUserId" value="@CurrentUserId" />
+    <form asp-action="AddPolls" method="post">
+        <input type="hidden" name="currentUserId" id="currentUserId" value="@Model.CurrentUserId" />
         <div class="form-group">
             <label asp-for="Title" class="col-form-label col-form-label-lg"></label>
             <input asp-for="Title" class="form-control form-control-lg">
