@@ -32,6 +32,7 @@ namespace QuestionReaction.Services
             };
 
             await _ctx.AddAsync(question);
+            await _ctx.SaveChangesAsync();
 
             var questionId = GetPollByVoteUidAsync(question.VoteUid).Id;
 
