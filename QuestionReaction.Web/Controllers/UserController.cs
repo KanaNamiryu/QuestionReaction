@@ -27,139 +27,43 @@ namespace QuestionReaction.Web.Controllers
             _userService = userService;
         }
 
-        public IActionResult Polls()
+        public async Task<IActionResult> Polls()
         {
-            var model = new UserPollsVM()
-            {
-                CreatedPolls = new List<QuestionsVM>()
-                {
-                    new QuestionsVM()
-                    {
-                        Title = "quest 1"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 2"
-                    }
-                },
-                JoinedPolls = new List<QuestionsVM>()
-                {
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 4"
-                    }
-                }
-            };
+            var model = new UserPollsVM();
 
-            var user = _userService.GetUserByIdAsync(_currentUserId);
+            // liste des sondages créés par l'utilisateur
+            model.CreatedPolls = _ctx.Users
+                .Select(u => u.Questions)
+                .FirstOrDefault()
+                .Select(p => new QuestionsVM()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    MultipleChoices = p.MultipleChoices,
+                    VoteUid = p.VoteUid,
+                    ResultUid = p.ResultUid
+                })
+                .ToList();
+
+            var user = await _userService.GetUserByIdAsync(_currentUserId);
 
             // liste des sondages auxquels l'utilisateur à été invité sauf ceux qu'il a créé
-            model.JoinedPolls = _ctx.Questions
-                .Where(q => q.UserId == user.Id)
+            model.JoinedPolls = _ctx.Guests
+                .Where(g => g.Mail == user.Mail)
+                .ToList()
+                .Select(g => g.Question)
+                .ToList()
+                .Where(q => q.User != user)
                 .Select(q => new QuestionsVM()
                 {
-                    Id = q.Id,
-                    Title = q.Title,
-                    MultipleChoices = q.MultipleChoices,
-                    VoteUid = q.VoteUid,
-                    ResultUid = q.ResultUid
+                    Id=q.Id,
+                    Title=q.Title,
+                    MultipleChoices=q.MultipleChoices,
+                    VoteUid=q.VoteUid,
+                    ResultUid=q.ResultUid
                 })
                 .ToList();
 
-            var guests = _pollService.GetGuestsByQuestionId(1);
-
-            // liste des sondages de l'utilisateur
-            model.CreatedPolls = _ctx.Questions
-                .Where(q => q.UserId == user.Id)
-                .Select(q => new QuestionsVM()
-                {
-                    Id = q.Id,
-                    Title = q.Title,
-                    MultipleChoices = q.MultipleChoices,
-                    VoteUid = q.VoteUid,
-                    ResultUid = q.ResultUid
-                })
-                .ToList();
             return View(model);
         }
 
