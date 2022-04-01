@@ -94,5 +94,10 @@ namespace QuestionReaction.Web.Controllers
             }
         }
 
+        public IActionResult PollsLinks()
+        {
+            var model = new PollsLinksPageVM();
+            return View(model);
+        }
     }
 }

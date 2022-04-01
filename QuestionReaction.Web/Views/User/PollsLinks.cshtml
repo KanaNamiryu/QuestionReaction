@@ -1,0 +1,50 @@
+﻿@model QuestionReaction.Web.Models.PollsLinksPageVM
+@{
+    ViewData["Title"] = "Gestion du sondage";
+}
+
+<div class="text-center">
+    <h1 class="display-4.5">Sondage créé</h1>
+</div>
+
+<hr />
+
+<div class="col-6 m-auto justify-content-around">
+    <div>
+        <h2 class="my-2 display-6">Réagir au sondage</h2>
+        <div class="col-10">
+            <label class="ml-auto display-6.5">https://___</label>
+        </div>
+    </div>
+    <div>
+        <h2 class="my-2 display-6">Résultat du sondage</h2>
+        <div class="col-10">
+            <label class="ml-auto display-6.5">https://___</label>
+        </div>
+    </div>
+    <div>
+        <h2 class="my-2 display-6">Désactiver le sondage</h2>
+        <div class="col-10">
+            <label class="ml-auto display-6.5">https://___</label>
+        </div>
+    </div>
+    <div class="text-center my-2">
+        <label class="text-danger m-auto display-6">Attention ! Ne partagez pas le lien de
+            désactivation du sondage !</label>
+    </div>
+    <form>
+        <div class="form-group my-3 text-center">
+            <label class="col-form-label col-form-label-lg">Seuls les utilisateurs invités au sondage pourront y participer.
+                Indiquez ici un ou plusieurs mail séparés par une virgule.</label>
+            <textarea asp-for="GuestsMailsString" class="form-control form-control-lg" rows="3" placeholder="exemple@email.fr, utilisateur@email.com, ..."></textarea>
+            <span asp-validation-for="GuestsMailsString" class="text-danger"></span>
+        </div>
+        <div class="form-row">
+            <button type="submit" class="btn btn-dark btn-lg m-auto">Inviter</button>
+        </div>
+    </form>
+    <div class="form-row align-content-between my-3 col-9 ml-auto">
+        <button type="button" class="btn btn-dark btn-lg m-auto m-2">Voir les résultats</button>
+        <button type="button" class="btn btn-danger btn-lg m-auto m-2">Supprimer</button>
+    </div>
+</div>
