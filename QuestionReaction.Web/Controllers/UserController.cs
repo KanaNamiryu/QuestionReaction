@@ -11,108 +11,69 @@ using System.Threading.Tasks;
 
 namespace QuestionReaction.Web.Controllers
 {
+    [Authorize]
     public class UserController: Controller
     {
         private readonly ILogger<UserController> _logger;
         private readonly IPollService _pollService;
         private readonly AppDbContext _ctx;
-        public UserController(ILogger<UserController> logger, IPollService pollService, AppDbContext ctx)
+        private readonly IUserService _userService;
+        private int _currentUserId => int.Parse(User.Claims.Single(u => u.Type == "id").Value);
+        public UserController(ILogger<UserController> logger, IPollService pollService, AppDbContext ctx, IUserService userService)
         {
             _logger = logger;
             _pollService = pollService;
             _ctx = ctx;
+            _userService = userService;
         }
 
-        [Authorize]
-        public IActionResult Polls()
+        public async Task<IActionResult> Polls()
         {
-            var model = new UserPollsVM()
-            {
-                CreatedPolls = new List<QuestionsVM>()
-                {
-                    new QuestionsVM()
-                    {
-                        Title = "quest 1"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 2"
-                    }
-                },
-                JoinedPolls = new List<QuestionsVM>()
-                {
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 3"
-                    },
-                    new QuestionsVM()
-                    {
-                        Title = "quest 4"
-                    }
-                }
-            };
-            model.CurrentUserId = int.Parse(User.Claims.Single(u => u.Type == "id").Value);
+            var model = new UserPollsVM();
 
-            model.CreatedPolls = _ctx.Questions
-                .Where(q => q.UserId == model.CurrentUserId)
-                .Select(q => new QuestionsVM()
+            // liste des sondages créés par l'utilisateur
+            model.CreatedPolls = _ctx.Users
+                .Select(u => u.Questions)
+                .FirstOrDefault()
+                .Select(p => new QuestionsVM()
                 {
-                    Id = q.Id,
-                    Title = q.Title,
-                    MultipleChoices = q.MultipleChoices,
-                    VoteUid = q.VoteUid,
-                    ResultUid = q.ResultUid
+                    Id = p.Id,
+                    Title = p.Title,
+                    MultipleChoices = p.MultipleChoices,
+                    VoteUid = p.VoteUid,
+                    ResultUid = p.ResultUid
                 })
                 .ToList();
+
+            var user = await _userService.GetUserByIdAsync(_currentUserId);
+
+            // liste des sondages auxquels l'utilisateur à été invité sauf ceux qu'il a créé
+            model.JoinedPolls = _ctx.Guests
+                .Where(g => g.Mail == user.Mail)
+                .ToList()
+                .Select(g => g.Question)
+                .ToList()
+                .Where(q => q.User != user)
+                .Select(q => new QuestionsVM()
+                {
+                    Id=q.Id,
+                    Title=q.Title,
+                    MultipleChoices=q.MultipleChoices,
+                    VoteUid=q.VoteUid,
+                    ResultUid=q.ResultUid
+                })
+                .ToList();
+
             return View(model);
         }
 
-        [Authorize]
         [HttpGet]
         public IActionResult AddPolls()
         {
-            var model = new UserAddPollsVM();
-            model.CurrentUserId = int.Parse(User.Claims.Single(u => u.Type == "id").Value);
+            var model = new UserAddPollsVM() { CurrentUserId = _currentUserId };
             return View(model);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddPolls(UserAddPollsVM model)
         {

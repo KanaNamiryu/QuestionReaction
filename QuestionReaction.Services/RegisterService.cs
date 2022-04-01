@@ -30,7 +30,7 @@ namespace QuestionReaction.Services
             var m = _ctx.Users.SingleOrDefault(u => u.Mail == mail);
             if (l == null && m == null)
             {
-                if (name == null)
+                if (string.IsNullOrWhiteSpace(name))
                 {
                     do
                     {
