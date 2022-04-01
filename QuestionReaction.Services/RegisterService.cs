@@ -61,7 +61,15 @@ namespace QuestionReaction.Services
             var names2 = new List<string>() { "Étrange", "Amusant", "Botté", "Rapide", "Multicolore", "Rôti", "Templier" };
             Random random = new Random();
 
-            name = names1[random.Next(0, 7)] + names2[random.Next(0, 7)] + random.Next(1000,10000);
+            var i = random.Next(0, 7);
+            name = names1[i];
+            var j = random.Next(0, 7);
+            name = name + names2[j];
+            if (i == 6 && (j == 1 || j == 2 || j == 5))
+            {
+                name = name + "e";
+            }
+            name = name + random.Next(1000, 10000);
             return name;
         }
     }
