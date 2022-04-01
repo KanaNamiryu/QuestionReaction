@@ -21,7 +21,6 @@ namespace QuestionReaction.Services
         }
         public async Task AddPollAsync(UserAddPollsVM model)
         {
-            // creation et ajout du sondage en lui-meme
             var question = new Question
             {
                 Title = model.Title,
@@ -31,30 +30,21 @@ namespace QuestionReaction.Services
                 VoteUid = AddGuid(),
                 ResultUid = AddGuid(),
                 DisableUid = AddGuid(),
-                UserId = model.CurrentUserId
+                UserId = model.CurrentUserId,
+                Choices = model.Choices
+                    .Select(c => new Choice
+                    {
+                        Content = c
+                    })
+                    .ToList()
             };
-
             await _ctx.AddAsync(question);
-            await _ctx.SaveChangesAsync();
-
-            var questionId = GetPollByVoteUidAsync(question.VoteUid).Id;
-
-            /* creation et ajout des choix et du createur du sondage
-             en tant que premier guest (pour avoir le droit de voter)
-             à partir de l'id de sondage récupéré au dessus */
-            model.Choices
-                .Select(async c => await _ctx
-                    .AddAsync(new Choice
-                        {
-                            Content = c,
-                            QuestionId = questionId
-                        }));
 
             var userMail = _userService.GetUserByIdAsync(model.CurrentUserId).Result.Mail;
             var guest = new Guest
             {
                 Mail = userMail,
-                QuestionId = questionId
+                Question = question
             };
             await _ctx.AddAsync(guest);
 
@@ -66,12 +56,19 @@ namespace QuestionReaction.Services
             return Guid.NewGuid().ToString().Replace("-", "").ToUpper();
         }
 
-        public async Task<Question> GetPollByVoteUidAsync(string uid)
+        public async Task<List<Guest>> GetGuestsByQuestionId(int questionId)
         {
-            var result = _ctx.Questions
-                .FirstOrDefault(q => q.VoteUid == uid);
+            return _ctx.Guests
+                .Where(g => g.QuestionId == questionId)
+                .ToList();
+        }
 
-            return result;
+        public async Task<List<Question>> GetPollsByGuestMailAsync(string guestMail)
+        {
+            return _ctx.Guests
+                .Where(g => g.Mail == guestMail)
+                .Select(g => g.Question)
+                .ToList();
         }
     }
 }
