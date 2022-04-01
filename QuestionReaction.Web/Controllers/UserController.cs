@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QuestionReaction.Data;
-using QuestionReaction.Data.Model;
 using QuestionReaction.Services.Interfaces;
 using QuestionReaction.Services.Models;
+using QuestionReaction.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -94,5 +94,10 @@ namespace QuestionReaction.Web.Controllers
             }
         }
 
+        public IActionResult PollsLinks()
+        {
+            var model = new PollsLinksPageVM();
+            return View(model);
+        }
     }
 }

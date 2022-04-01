@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuestionReaction.Services.Models
+namespace QuestionReaction.Web.Models
 {
     public class UserPollsVM
     {
