@@ -31,10 +31,11 @@ namespace QuestionReaction.Web.Controllers
         {
             var model = new UserPollsVM();
 
+            var user = await _userService.GetUserByIdAsync(_currentUserId);
+
             // liste des sondages créés par l'utilisateur
-            model.CreatedPolls = _ctx.Users
-                .Select(u => u.Questions)
-                .FirstOrDefault()
+            model.CreatedPolls = _pollService.GetQuestionsByUserIdAsync(_currentUserId)
+                .Result
                 .Select(p => new QuestionsVM()
                 {
                     Id = p.Id,
@@ -45,24 +46,22 @@ namespace QuestionReaction.Web.Controllers
                 })
                 .ToList();
 
-            var user = await _userService.GetUserByIdAsync(_currentUserId);
-
             // liste des sondages auxquels l'utilisateur à été invité sauf ceux qu'il a créé
-            model.JoinedPolls = _ctx.Guests
-                .Where(g => g.Mail == user.Mail)
-                .ToList()
-                .Select(g => g.Question)
-                .ToList()
-                .Where(q => q.User != user)
-                .Select(q => new QuestionsVM()
-                {
-                    Id=q.Id,
-                    Title=q.Title,
-                    MultipleChoices=q.MultipleChoices,
-                    VoteUid=q.VoteUid,
-                    ResultUid=q.ResultUid
-                })
-                .ToList();
+            var allPolls = await _pollService.GetQuestionsByGuestAsync(user.Mail);
+            if (allPolls != null)
+            {
+                model.JoinedPolls = allPolls
+                    .Where(q => q.User != user)
+                    .Select(q => new QuestionsVM()
+                    {
+                        Id = q.Id,
+                        Title = q.Title,
+                        MultipleChoices = q.MultipleChoices,
+                        VoteUid = q.VoteUid,
+                        ResultUid = q.ResultUid
+                    })
+                    .ToList();
+            }
 
             return View(model);
         }
@@ -89,15 +88,41 @@ namespace QuestionReaction.Web.Controllers
                     }
                     .Where(c => c != null)
                     .ToList();
-                await _pollService.AddPollAsync(model);
-                return RedirectToAction(nameof(Polls)); // redirection a changer vers la page des liens
+                var pollId = await _pollService.AddPollAsync(model);
+
+                return RedirectToAction(nameof(PollsLinks), new { pollId = pollId });
             }
         }
 
-        public IActionResult PollsLinks()
+        [HttpGet]
+        public async Task<IActionResult> PollsLinks(int pollId)
         {
-            var model = new PollsLinksPageVM();
+            //Request.Host.Value
+            var poll = await _pollService.GetQuestionByIdAsync(pollId);
+            var linkBase = "https://" + Request.Host.Value + "/User/";
+            var model = new PollsLinksPageVM()
+            {
+                VoteLink = linkBase + "Vote?voteUid=" + poll.VoteUid,
+                ResultLink = linkBase + "Result?resultUid=" + poll.ResultUid,
+                DisableLink = linkBase + "Disable?disableUid=" + poll.DisableUid
+            };
             return View(model);
+        }
+
+        public async Task<IActionResult> Disable(string disableUid)
+        {
+            await _pollService.DisableQuestionAsync(disableUid); // a corriger dans l'html pour recup uid a la place du link
+            return RedirectToAction(nameof(Polls));
+        }
+
+        public IActionResult Vote(string voteUid)
+        {
+            return View();
+        }
+
+        public IActionResult Result(string resultUid)
+        {
+            return View();
         }
     }
 }

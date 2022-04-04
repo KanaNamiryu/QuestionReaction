@@ -1,4 +1,5 @@
-﻿using QuestionReaction.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using QuestionReaction.Data;
 using QuestionReaction.Data.Model;
 using QuestionReaction.Services.Interfaces;
 using QuestionReaction.Services.Models;
@@ -19,7 +20,7 @@ namespace QuestionReaction.Services
             _ctx = ctx;
             _userService = userService;
         }
-        public async Task AddPollAsync(UserAddPollsVM model)
+        public async Task<int> AddPollAsync(UserAddPollsVM model)
         {
             var question = new Question
             {
@@ -47,8 +48,11 @@ namespace QuestionReaction.Services
                 Question = question
             };
             await _ctx.AddAsync(guest);
-
             await _ctx.SaveChangesAsync();
+
+            question = await GetQuestionByVoteUid(question.VoteUid);
+
+            return question.Id;
         }
 
         public string AddGuid()
@@ -58,17 +62,55 @@ namespace QuestionReaction.Services
 
         public async Task<List<Guest>> GetGuestsByQuestionId(int questionId)
         {
-            return _ctx.Guests
+            return await _ctx.Guests
                 .Where(g => g.QuestionId == questionId)
-                .ToList();
+                .ToListAsync();
         }
 
-        public async Task<List<Question>> GetPollsByGuestMailAsync(string guestMail)
+        public async Task<List<Question>> GetQuestionsByGuestMailAsync(string guestMail)
+        {
+            return await _ctx.Guests
+                .Where(g => g.Mail == guestMail)
+                .Select(g => g.Question)
+                .ToListAsync();
+        }
+
+        public async Task<Question> GetQuestionByIdAsync(int questionId)
+        {
+            return await _ctx.Questions
+                .FirstOrDefaultAsync(q => q.Id == questionId);
+        }
+
+        public async Task<List<Question>> GetQuestionsByGuestAsync(string guestMail)
         {
             return _ctx.Guests
                 .Where(g => g.Mail == guestMail)
+                .ToList()
                 .Select(g => g.Question)
                 .ToList();
+        }
+
+        public async Task<List<Question>> GetQuestionsByUserIdAsync(int userId)
+        {
+            return _ctx.Users
+                .Where(u => u.Id == userId)
+                .Select(u => u.Questions)
+                .FirstOrDefault();
+        }
+
+        public async Task DisableQuestionAsync(string disableUid)
+        {
+            var question = await _ctx.Questions
+                .FirstOrDefaultAsync(q => q.DisableUid == disableUid);
+            question.IsActive = false;
+            _ctx.Questions.Update(question);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task<Question> GetQuestionByVoteUid(string voteUid)
+        {
+            return await _ctx.Questions
+                .FirstOrDefaultAsync(q => q.VoteUid == voteUid);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace QuestionReaction.Services.Interfaces
         /// Ajout d'un sondage dans la BDD a partir d'un ViewModel
         /// </summary>
         /// <param name="model"></param>
-        Task AddPollAsync(UserAddPollsVM model);
+        Task<int> AddPollAsync(UserAddPollsVM model);
         /// <summary>
         /// Créé un guid au format string sans les tirets
         /// </summary>
@@ -31,7 +31,26 @@ namespace QuestionReaction.Services.Interfaces
         /// </summary>
         /// <param name="guestMail"></param>
         /// <returns></returns>
-        Task<List<Question>> GetPollsByGuestMailAsync(string guestMail);
+        Task<List<Question>> GetQuestionsByGuestMailAsync(string guestMail);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="questionId"></param>
+        /// <returns></returns>
+        Task<Question> GetQuestionByIdAsync(int questionId);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guestMail"></param>
+        /// <returns></returns>
+        Task<List<Question>> GetQuestionsByGuestAsync(string guestMail);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<List<Question>> GetQuestionsByUserIdAsync(int userId);
 
+        Task DisableQuestionAsync(string disableUid);
     }
 }
