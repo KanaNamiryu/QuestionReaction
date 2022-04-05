@@ -57,7 +57,6 @@ namespace QuestionReaction.Services.Interfaces
 
         Task<Question> GetQuestionByResultUid(string resultUid);
 
-        Task<int> GetVoteNumberByQuestionId(int voteId);
 
     }
 }

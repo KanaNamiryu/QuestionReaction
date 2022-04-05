@@ -110,20 +110,17 @@ namespace QuestionReaction.Services
         public async Task<Question> GetQuestionByVoteUid(string voteUid)
         {
             return await _ctx.Questions
+                .Include(q => q.Choices)
+                .Include(q => q.Reactions)
                 .FirstOrDefaultAsync(q => q.VoteUid == voteUid);
         }
 
         public async Task<Question> GetQuestionByResultUid(string resultUid)
         {
             return await _ctx.Questions
+                .Include(q => q.Choices)
+                .Include(q => q.Reactions)
                 .FirstOrDefaultAsync(q => q.ResultUid == resultUid);
-        }
-
-        public async Task<int> GetVoteNumberByQuestionId(int questionId)
-        {
-            return await _ctx.Reactions
-                .Where(r => r.QuestionId == questionId)
-                .CountAsync();
         }
     }
 }
