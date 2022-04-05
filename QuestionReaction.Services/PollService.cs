@@ -112,5 +112,18 @@ namespace QuestionReaction.Services
             return await _ctx.Questions
                 .FirstOrDefaultAsync(q => q.VoteUid == voteUid);
         }
+
+        public async Task<Question> GetQuestionByResultUid(string resultUid)
+        {
+            return await _ctx.Questions
+                .FirstOrDefaultAsync(q => q.ResultUid == resultUid);
+        }
+
+        public async Task<int> GetVoteNumberByQuestionId(int questionId)
+        {
+            return await _ctx.Reactions
+                .Where(r => r.QuestionId == questionId)
+                .CountAsync();
+        }
     }
 }

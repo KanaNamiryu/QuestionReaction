@@ -52,5 +52,12 @@ namespace QuestionReaction.Services.Interfaces
         Task<List<Question>> GetQuestionsByUserIdAsync(int userId);
 
         Task DisableQuestionAsync(string disableUid);
+
+        Task<Question> GetQuestionByVoteUid(string voteUid);
+
+        Task<Question> GetQuestionByResultUid(string resultUid);
+
+        Task<int> GetVoteNumberByQuestionId(int voteId);
+
     }
 }
