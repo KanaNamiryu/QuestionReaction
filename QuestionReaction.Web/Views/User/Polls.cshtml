@@ -24,6 +24,12 @@
                                         <label>@question.Title</label>
                                         <hr style="margin: 0px" />
                                     </td>
+                                    <td class="ml-auto">
+                                        <form asp-action="Vote" method="get" class="m-auto m-2">
+                                            <input text=@question.Id type="hidden" />
+                                            <button type="submit" class="btn btn-dark btn-lg">Voter</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             }
                         </tbody>

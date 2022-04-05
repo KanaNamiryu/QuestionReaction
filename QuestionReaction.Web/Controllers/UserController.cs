@@ -97,7 +97,6 @@ namespace QuestionReaction.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> PollsLinks(int pollId)
         {
-            //Request.Host.Value
             var poll = await _pollService.GetQuestionByIdAsync(pollId);
             var linkBase = "https://" + Request.Host.Value + "/User/";
             var model = new PollsLinksPageVM()
@@ -114,7 +113,7 @@ namespace QuestionReaction.Web.Controllers
 
         public async Task<IActionResult> Disable(string disableUid)
         {
-            await _pollService.DisableQuestionAsync(disableUid); // a corriger dans l'html pour recup uid a la place du link
+            await _pollService.DisableQuestionAsync(disableUid);
             return RedirectToAction(nameof(Polls));
         }
 
