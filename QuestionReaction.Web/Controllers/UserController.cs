@@ -103,8 +103,11 @@ namespace QuestionReaction.Web.Controllers
             var model = new PollsLinksPageVM()
             {
                 VoteLink = linkBase + "Vote?voteUid=" + poll.VoteUid,
+                VoteUid = poll.VoteUid,
                 ResultLink = linkBase + "Result?resultUid=" + poll.ResultUid,
-                DisableLink = linkBase + "Disable?disableUid=" + poll.DisableUid
+                ResultUid = poll.ResultUid,
+                DisableLink = linkBase + "Disable?disableUid=" + poll.DisableUid,
+                DisableUid = poll.DisableUid
             };
             return View(model);
         }

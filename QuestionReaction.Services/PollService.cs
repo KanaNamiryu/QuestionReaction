@@ -92,10 +92,10 @@ namespace QuestionReaction.Services
 
         public async Task<List<Question>> GetQuestionsByUserIdAsync(int userId)
         {
-            return _ctx.Users
+            return await _ctx.Users
                 .Where(u => u.Id == userId)
                 .Select(u => u.Questions)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
         }
 
         public async Task DisableQuestionAsync(string disableUid)

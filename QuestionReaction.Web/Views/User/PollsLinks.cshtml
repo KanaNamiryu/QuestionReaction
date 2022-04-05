@@ -13,19 +13,19 @@
     <div>
         <h2 class="my-2 display-6">Réagir au sondage</h2>
         <div class="col-10">
-            <label class="ml-auto display-6.5">https://___@Model.VoteLink</label>
+            <label class="ml-auto display-6.5">@Model.VoteLink</label>
         </div>
     </div>
     <div>
         <h2 class="my-2 display-6">Résultat du sondage</h2>
         <div class="col-10">
-            <label class="ml-auto display-6.5">https://___@Model.ResultLink</label>
+            <label class="ml-auto display-6.5">@Model.ResultLink</label>
         </div>
     </div>
     <div>
         <h2 class="my-2 display-6">Désactiver le sondage</h2>
         <div class="col-10">
-            <label class="ml-auto display-6.5">https://___@Model.DisableLink</label>
+            <label class="ml-auto display-6.5">@Model.DisableLink</label>
         </div>
     </div>
     <div class="text-center my-2">
@@ -44,13 +44,13 @@
         </div>
     </form>
     <div class="form-row align-content-between my-3 col-9 ml-auto">
-        <form asp-action="Result" method="get">
-            <input asp-for=ResultLink text=@Model.ResultLink hidden />
-            <button type="submit" class="btn btn-dark btn-lg m-auto m-2">Voir les résultats</button>
+        <form asp-action="Result" method="get" class="m-auto m-2">
+            <input asp-for=ResultUid text=@Model.ResultUid type="hidden" />
+            <button type="submit" class="btn btn-dark btn-lg">Voir les résultats</button>
         </form>
-        <form asp-action="Disable" method="get">
-            <input asp-for=DisableLink text=@Model.DisableLink hidden />
-            <button type="submit" class="btn btn-danger btn-lg m-auto m-2">Désactiver</button>
+        <form asp-action="Disable" method="get" class="m-auto m-2">
+            <input asp-for=DisableUid text=@Model.DisableUid type="hidden" />
+            <button type="submit" class="btn btn-danger btn-lg">Désactiver</button>
         </form>
     </div>
 </div>
