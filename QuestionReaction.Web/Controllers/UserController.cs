@@ -122,13 +122,24 @@ namespace QuestionReaction.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Vote(string voteUid)
+        public async Task<IActionResult> Vote(string voteUid)
         {
-            return View();
+            var question = await _pollService.GetQuestionByVoteUid(voteUid);
+            var model = new VoteVM()
+            {
+                Question = question,
+                VoteNumber = await _pollService.GetVoteNumberByQuestionId(question.Id)
+            };
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult Result(string resultUid)
+        {
+            return View();
+        }
+
+        public IActionResult ErrorNotInvited()
         {
             return View();
         }
