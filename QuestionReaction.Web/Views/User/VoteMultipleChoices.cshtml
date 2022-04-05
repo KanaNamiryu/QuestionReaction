@@ -1,0 +1,38 @@
+﻿@model QuestionReaction.Web.Models.VoteVM
+@{
+    ViewData["Title"] = "Vote - " + @Model.Question.Title;
+}
+
+
+<div class="row">
+    <div class="col-2"></div>
+    <div class=" col-8 text-center">
+        <h1 class="display-4.5">@Model.Question.Title</h1>
+    </div>
+    <div class="col-2 text-right align-text-bottom">
+        <label class="display-6">15</label>
+    </div>
+</div>
+
+<hr />
+
+<div class="col-6 m-auto justify-content-around">
+    <p>@Model.Question.Description</p>
+    <hr />
+    <form asp-action=VoteMultipleChoices method="post">
+        <div class="form-group">
+            @{
+                var i = 0;
+            }
+           @foreach (var choice in Model.Question.Choices)
+          {
+            <div class="form-check form-row">
+                <input asp-for=SelectedChoices[i] name="choice@(i+1)" class="form-check-input" type="checkbox">
+                <label asp-for=SelectedChoices[i] class="form-check-label">@choice.Content</label>
+            </div>
+            @(i++)
+          }
+        </div>
+        <button type="submit" class="btn btn-dark btn-lg ml-auto">Valider</button>
+    </form>
+</div>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QuestionReaction.Data;
@@ -125,10 +126,56 @@ namespace QuestionReaction.Web.Controllers
         public async Task<IActionResult> Vote(string voteUid)
         {
             var question = await _pollService.GetQuestionByVoteUid(voteUid);
+            if (question.MultipleChoices) // vote a choix multiple
+            {
+                return RedirectToAction(nameof(VoteMultipleChoices), new { voteUid = voteUid });
+            }
+            else // vote a choix unique
+            {
+                return RedirectToAction(nameof(VoteUniqueChoice), new { voteUid = voteUid });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> VoteMultipleChoices(string voteUid)
+        {
+            var question = await _pollService.GetQuestionByVoteUid(voteUid);
             var model = new VoteVM()
             {
                 Question = question,
-                VoteNumber = await _pollService.GetVoteNumberByQuestionId(question.Id)
+                ChoicesQuantity = question.Choices.Count,
+                VoteNumber = question.Reactions
+                    .Where(r => r.QuestionId == question.Id)
+                    .Count(),
+                SelectedChoices = new string[question.Choices.Count]
+        };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> VoteMultipleChoices(VoteVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else 
+            {
+                return default;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> VoteUniqueChoice(string voteUid)
+        {
+            var question = await _pollService.GetQuestionByVoteUid(voteUid);
+            var model = new VoteVM()
+            {
+                Question = question,
+                ChoicesQuantity = question.Choices.Count,
+                VoteNumber = question.Reactions
+                    .Where(r => r.QuestionId == question.Id)
+                    .Count()
             };
             return View(model);
         }
