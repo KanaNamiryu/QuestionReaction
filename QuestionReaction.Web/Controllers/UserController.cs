@@ -42,7 +42,8 @@ namespace QuestionReaction.Web.Controllers
                     Title = p.Title,
                     MultipleChoices = p.MultipleChoices,
                     VoteUid = p.VoteUid,
-                    ResultUid = p.ResultUid
+                    ResultUid = p.ResultUid,
+                    IsActive = p.IsActive
                 })
                 .ToList();
 
@@ -58,7 +59,8 @@ namespace QuestionReaction.Web.Controllers
                         Title = q.Title,
                         MultipleChoices = q.MultipleChoices,
                         VoteUid = q.VoteUid,
-                        ResultUid = q.ResultUid
+                        ResultUid = q.ResultUid,
+                        IsActive = q.IsActive
                     })
                     .ToList();
             }
@@ -106,22 +108,26 @@ namespace QuestionReaction.Web.Controllers
                 ResultLink = linkBase + "Result?resultUid=" + poll.ResultUid,
                 ResultUid = poll.ResultUid,
                 DisableLink = linkBase + "Disable?disableUid=" + poll.DisableUid,
-                DisableUid = poll.DisableUid
+                DisableUid = poll.DisableUid,
+                IsActive = poll.IsActive
             };
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Disable(string disableUid)
         {
             await _pollService.DisableQuestionAsync(disableUid);
             return RedirectToAction(nameof(Polls));
         }
 
+        [HttpGet]
         public IActionResult Vote(string voteUid)
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult Result(string resultUid)
         {
             return View();

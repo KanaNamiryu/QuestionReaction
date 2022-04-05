@@ -21,6 +21,7 @@ namespace QuestionReaction.Web.Models
         public bool MultipleChoices { get; set; }
         public string VoteUid { get; set; }
         public string ResultUid { get; set; }
+        public bool IsActive { get; set; }
 
     }
 }
