@@ -105,6 +105,12 @@ namespace QuestionReaction.Services.Interfaces
         /// <param name="questionId">id du sondage</param>
         /// <returns>Renvoie True si l'utilisateur à déja voté à ce sondage</returns>
         Task<bool> AsAlreadyVotedAsync(int userId, int questionId);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="voteUid"></param>
+        /// <returns></returns>
+        Task<bool> VoteUidExistsAsync(string voteUid);
 
         #endregion
     }
