@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QuestionReaction.Data;
@@ -42,7 +43,8 @@ namespace QuestionReaction.Web.Controllers
                     Title = p.Title,
                     MultipleChoices = p.MultipleChoices,
                     VoteUid = p.VoteUid,
-                    ResultUid = p.ResultUid
+                    ResultUid = p.ResultUid,
+                    IsActive = p.IsActive
                 })
                 .ToList();
 
@@ -58,7 +60,8 @@ namespace QuestionReaction.Web.Controllers
                         Title = q.Title,
                         MultipleChoices = q.MultipleChoices,
                         VoteUid = q.VoteUid,
-                        ResultUid = q.ResultUid
+                        ResultUid = q.ResultUid,
+                        IsActive = q.IsActive
                     })
                     .ToList();
             }
@@ -97,7 +100,6 @@ namespace QuestionReaction.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> PollsLinks(int pollId)
         {
-            //Request.Host.Value
             var poll = await _pollService.GetQuestionByIdAsync(pollId);
             var linkBase = "https://" + Request.Host.Value + "/User/";
             var model = new PollsLinksPageVM()
@@ -107,23 +109,61 @@ namespace QuestionReaction.Web.Controllers
                 ResultLink = linkBase + "Result?resultUid=" + poll.ResultUid,
                 ResultUid = poll.ResultUid,
                 DisableLink = linkBase + "Disable?disableUid=" + poll.DisableUid,
-                DisableUid = poll.DisableUid
+                DisableUid = poll.DisableUid,
+                IsActive = poll.IsActive
             };
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Disable(string disableUid)
         {
-            await _pollService.DisableQuestionAsync(disableUid); // a corriger dans l'html pour recup uid a la place du link
+            await _pollService.DisableQuestionAsync(disableUid);
             return RedirectToAction(nameof(Polls));
         }
 
-        public IActionResult Vote(string voteUid)
+        [HttpGet]
+        public async Task<IActionResult> Vote(string voteUid)
+        {
+            var question = await _pollService.GetQuestionByVoteUidAsync(voteUid);
+            var userMail = _userService.GetUserByIdAsync(_currentUserId).Result.Mail;
+
+            if (await _ctx.Guests
+                .Where(g => g.Mail == userMail)
+                .Where(g => g.Question == question)
+                .SingleAsync() == null) // le mail de l'utilisateur n'est pas dans la liste des invités
+            {
+                return RedirectToAction(nameof(ErrorNotInvited));
+            }
+            else // l'utilisateur est invité et peut donc voter
+            {
+                var model = new VoteVM()
+                {
+                    Question = question,
+                    VoteNumber = question.Reactions
+                        .Where(r => r.QuestionId == question.Id)
+                        .Count()
+                };
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Vote(VoteVM model)
+        {
+            var resultUid = await _pollService.AddReactionsAsync(
+                model.SelectedChoices.ToList(),
+                _currentUserId);
+            return RedirectToAction(nameof(Result), new { resultUid = resultUid });
+        }
+
+        [HttpGet]
+        public IActionResult Result(string resultUid)
         {
             return View();
         }
 
-        public IActionResult Result(string resultUid)
+        public IActionResult ErrorNotInvited()
         {
             return View();
         }

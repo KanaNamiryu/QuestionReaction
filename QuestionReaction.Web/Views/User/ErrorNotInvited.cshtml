@@ -1,0 +1,17 @@
+﻿@model QuestionReaction.Web.Models.LoginVM
+@{
+    ViewData["Title"] = "Erreur";
+}
+
+<div class="text-center">
+    <h1 class="display-4.5">Erreur → Non invité</h1>
+    <p class="display-6">Il semblerait que vous ne soyez pas sur la liste des invités de ce sondage !</p>
+</div>
+
+<hr />
+
+<div class="col-6 m-auto justify-content-around text-center">
+    <form asp-action="Polls" class="mx-auto">
+        <button type="submit" class="btn btn-dark btn-lg mx-auto">Retour aux sondages</button>
+    </form>
+</div>

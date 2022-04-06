@@ -16,13 +16,33 @@
             <div class="overflow_ext border">
                 <div class="overflow_int">
                     <table class="table table-sm table-borderless">
-                        <tbody>
+                        <tbody class="col-12">
                             @foreach (var question in Model.CreatedPolls)
                             {
-                                <tr>
-                                    <td>
+                                <tr class="col-12">
+                                    <td class="mx-auto">
                                         <label>@question.Title</label>
                                         <hr style="margin: 0px" />
+                                    </td>
+                                    <td class="ml-auto mr-0">
+                                        <form asp-action="Vote" method="get">
+                                            <input id="voteUid" name="voteUid" value=@question.VoteUid type="hidden" />
+                                            @{var d = "";
+                                                if(!question.IsActive) { d = "disabled"; }}
+                                            <button type="submit" class="btn btn-dark" @d>Voter</button>
+                                        </form>
+                                    </td>
+                                    <td class="mx-0">
+                                        <form asp-action="Result" method="get">
+                                            <input id="resultUid" name="resultUid" value=@question.ResultUid type="hidden" />
+                                            <button type="submit" class="btn btn-dark" >Résultats</button>
+                                        </form>
+                                    </td>
+                                    <td class="mx-0">
+                                        <form asp-action="PollsLinks" method="get">
+                                            <input id="pollId" name="pollId" value=@question.Id type="hidden" />
+                                            <button type="submit" class="btn btn-dark" >Gérer</button>
+                                        </form>
                                     </td>
                                 </tr>
                             }
@@ -43,6 +63,20 @@
                                     <td>
                                         <label>@question.Title</label>
                                         <hr style="margin: 0px" />
+                                    </td>
+                                    <td class="ml-auto mr-0">
+                                        <form asp-action="Vote" method="get">
+                                            <input id="voteUid" name="voteUid" value=@question.VoteUid type="hidden" />
+                                            @{var d = "";
+                                                if(!question.IsActive) { d = "disabled"; }}
+                                            <button type="submit" class="btn btn-dark" @d>Voter</button>
+                                        </form>
+                                    </td>
+                                    <td class="mx-0">
+                                        <form asp-action="Result" method="get">
+                                            <input id="resultUid" name="resultUid" value=@question.ResultUid type="hidden" />
+                                            <button type="submit" class="btn btn-dark" >Résultats</button>
+                                        </form>
                                     </td>
                                 </tr>
                             }

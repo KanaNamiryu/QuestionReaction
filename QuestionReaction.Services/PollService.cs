@@ -50,7 +50,7 @@ namespace QuestionReaction.Services
             await _ctx.AddAsync(guest);
             await _ctx.SaveChangesAsync();
 
-            question = await GetQuestionByVoteUid(question.VoteUid);
+            question = await GetQuestionByVoteUidAsync(question.VoteUid);
 
             return question.Id;
         }
@@ -107,10 +107,52 @@ namespace QuestionReaction.Services
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task<Question> GetQuestionByVoteUid(string voteUid)
+        public async Task<Question> GetQuestionByVoteUidAsync(string voteUid)
         {
             return await _ctx.Questions
+                .Include(q => q.Choices)
+                .Include(q => q.Reactions)
                 .FirstOrDefaultAsync(q => q.VoteUid == voteUid);
+        }
+
+        public async Task<Question> GetQuestionByResultUidAsync(string resultUid)
+        {
+            return await _ctx.Questions
+                .Include(q => q.Choices)
+                .Include(q => q.Reactions)
+                .FirstOrDefaultAsync(q => q.ResultUid == resultUid);
+        }
+
+        public async Task<Choice> GetChoiceByIdAsync(int choiceId)
+        {
+            return await _ctx.Choices
+                .FirstOrDefaultAsync(c => c.Id == choiceId);
+        }
+
+        public async Task<string> AddReactionsAsync(List<int> choicesId, int userId)
+        {
+            var choices = choicesId
+                .Select(c => GetChoiceByIdAsync(c).Result)
+                .ToList();
+
+            var user = await _userService.GetUserByIdAsync(userId);
+
+            var question = await GetQuestionByIdAsync(choices.FirstOrDefault().QuestionId);
+
+            var reactions = new List<Reaction>();
+
+            choices.ForEach(c => reactions
+                .Add(new Reaction()
+                {
+                    Choice = c,
+                    User = user,
+                    Question = question
+                }));
+
+            await _ctx.AddRangeAsync(choices);
+            await _ctx.SaveChangesAsync();
+
+            return question.ResultUid;
         }
     }
 }
