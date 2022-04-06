@@ -6,6 +6,7 @@ using QuestionReaction.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ namespace QuestionReaction.Services
         {
             return await _ctx.Questions
                 .Include(q => q.Reactions)
+                .Include(q => q.User)
                 .FirstOrDefaultAsync(q => q.Id == questionId);
         }
 
@@ -70,6 +72,17 @@ namespace QuestionReaction.Services
         {
             return await _ctx.Choices
                 .FirstOrDefaultAsync(c => c.Id == choiceId);
+        }
+
+        #endregion
+        #region Get Reaction
+
+        public async Task<List<Reaction>> GetReactionsByQuestionIdAsync(int questionId)
+        {
+            return await _ctx.Reactions
+                .Include(r => r.User)
+                .Where(r => r.QuestionId == questionId)
+                .ToListAsync();
         }
 
         #endregion
@@ -140,6 +153,28 @@ namespace QuestionReaction.Services
             return question.ResultUid;
         }
 
+        public async Task AddGuestsAsync(List<string> mails, int questionId)
+        {
+            var question = await GetQuestionByIdAsync(questionId);
+
+            var guests = new List<Guest>();
+
+            var validMails = mails
+                .Where(m => IsvalidMail(m))
+                .ToList();
+
+            validMails.ForEach(m => guests
+            .Add(new Guest()
+            {
+                Mail = m,
+                Question = question
+            }));
+
+            await _ctx.AddRangeAsync(guests);
+            await _ctx.SaveChangesAsync();
+
+        }
+
         #endregion
 
         // -----
@@ -177,18 +212,28 @@ namespace QuestionReaction.Services
 
         public async Task<bool> AsAlreadyVotedAsync(int userId, int questionId)
         {
-            var result = false;
+            var reactions = await GetReactionsByQuestionIdAsync(questionId);
 
-            var question = await GetQuestionByIdAsync(questionId);
-
-            result = question.Reactions.Any(r => r.User.Id == userId);
-
-            return result;
+            return reactions.Any(r => r.User.Id == userId);
         }
 
         public async Task<bool> VoteUidExistsAsync(string voteUid)
         {
             return await _ctx.Questions.AnyAsync(q => q.VoteUid == voteUid);
+        }
+
+        private bool IsvalidMail(string mail)
+        {
+            try
+            {
+                var m = new MailAddress(mail);
+
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
 
         #endregion

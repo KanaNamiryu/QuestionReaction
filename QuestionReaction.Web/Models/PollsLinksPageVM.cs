@@ -11,7 +11,7 @@ namespace QuestionReaction.Web.Models
         public string DisableLink { get; set; }
         public string DisableUid { get; set; }
         public string GuestsMailsString { get; set; }
-        public List<string> GuestsMails { get; set; }
+        public int QuestionId { get; set; }
         public bool IsActive { get; set; }
     }
 }

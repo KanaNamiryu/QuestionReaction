@@ -164,7 +164,8 @@ namespace QuestionReaction.Web.Controllers
                 ResultUid = poll.ResultUid,
                 DisableLink = linkBase + "Disable?disableUid=" + poll.DisableUid,
                 DisableUid = poll.DisableUid,
-                IsActive = poll.IsActive
+                IsActive = poll.IsActive,
+                QuestionId = pollId
             };
             return View(model);
         }
@@ -266,6 +267,17 @@ namespace QuestionReaction.Web.Controllers
         public IActionResult ErrorNotInvited()
         {
             return View();
+        }
+
+
+        public async Task<IActionResult> Invite(PollsLinksPageVM model)
+        {
+            var mailsString = model.GuestsMailsString;
+            var mailsList = mailsString.Split(',').ToList();
+
+            await _pollService.AddGuestsAsync(mailsList, model.QuestionId);
+
+            return RedirectToAction(nameof(PollsLinks), new { pollId = model.QuestionId });
         }
     }
 }
