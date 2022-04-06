@@ -20,7 +20,6 @@
     <p>@Model.Question.Description</p>
     <hr />
     <form asp-action=VoteMultipleChoices method="post">
-        <input type="hidden" name="QuestionId" id="QuestionId" value="@Model.Question.Id" />
         <div class="form-group">
             @foreach (var choice in Model.Question.Choices)
             {

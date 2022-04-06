@@ -125,7 +125,7 @@ namespace QuestionReaction.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Vote(string voteUid)
         {
-            var question = await _pollService.GetQuestionByVoteUid(voteUid);
+            var question = await _pollService.GetQuestionByVoteUidAsync(voteUid);
             var model = new VoteVM()
             {
                 Question = question,
@@ -145,7 +145,10 @@ namespace QuestionReaction.Web.Controllers
             }
             else 
             {
-                return default;
+                var resultUid = await _pollService.AddReactionsAsync(
+                    model.SelectedChoices.ToList(),
+                    _currentUserId);
+                return RedirectToAction(nameof(Result), new { resultUid = resultUid });
             }
         }
 
