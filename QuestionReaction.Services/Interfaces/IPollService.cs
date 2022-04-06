@@ -55,6 +55,16 @@ namespace QuestionReaction.Services.Interfaces
         Task<Choice> GetChoiceByIdAsync(int choiceId);
 
         #endregion
+        #region Get Reaction
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="questionId"></param>
+        /// <returns></returns>
+        Task<List<Reaction>> GetReactionsByQuestionIdAsync(int questionId);
+
+        #endregion
         #endregion
 
         // -----
@@ -74,6 +84,13 @@ namespace QuestionReaction.Services.Interfaces
         /// <param name="userId">id de l'utilisateur qui vote</param>
         /// <returns></returns>
         Task<string> AddReactionsAsync(List<int> choicesId, int userId);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mails"></param>
+        /// <param name="questionId"></param>
+        /// <returns></returns>
+        Task AddGuestsAsync(List<string> mails, int questionId);
 
         #endregion
 
