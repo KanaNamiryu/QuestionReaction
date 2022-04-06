@@ -1,4 +1,5 @@
-﻿using QuestionReaction.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using QuestionReaction.Data;
 using QuestionReaction.Data.Model;
 using QuestionReaction.Services.Interfaces;
 using System;
@@ -19,8 +20,9 @@ namespace QuestionReaction.Services
 
         public async Task<User> GetUserByIdAsync(int userId)
         {
-            return _ctx.Users
-                .FirstOrDefault(u => u.Id == userId);
+            return await _ctx.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
         }
+
     }
 }

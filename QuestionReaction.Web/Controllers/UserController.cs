@@ -49,7 +49,7 @@ namespace QuestionReaction.Web.Controllers
                 .ToList();
 
             // liste des sondages auxquels l'utilisateur à été invité sauf ceux qu'il a créé
-            var allPolls = await _pollService.GetQuestionsByGuestAsync(user.Mail);
+            var allPolls = await _pollService.GetQuestionsByGuestMailAsync(user.Mail);
             if (allPolls != null)
             {
                 model.JoinedPolls = allPolls

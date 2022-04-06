@@ -20,6 +20,65 @@ namespace QuestionReaction.Services
             _ctx = ctx;
             _userService = userService;
         }
+
+        #region Get
+        #region Get Question
+
+        public async Task<Question> GetQuestionByIdAsync(int questionId)
+        {
+            return await _ctx.Questions
+                .Include(q => q.Reactions)
+                .FirstOrDefaultAsync(q => q.Id == questionId);
+        }
+
+        public async Task<List<Question>> GetQuestionsByUserIdAsync(int userId)
+        {
+            return await _ctx.Users
+                .Where(u => u.Id == userId)
+                .Select(u => u.Questions)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Question>> GetQuestionsByGuestMailAsync(string guestMail)
+        {
+            return await _ctx.Guests
+                .Where(g => g.Mail == guestMail)
+                .Select(g => g.Question)
+                .ToListAsync();
+        }
+
+        public async Task<Question> GetQuestionByVoteUidAsync(string voteUid)
+        {
+            return await _ctx.Questions
+                .Include(q => q.Choices)
+                .Include(q => q.Reactions)
+                .FirstOrDefaultAsync(q => q.VoteUid == voteUid);
+        }
+
+        public async Task<Question> GetQuestionByResultUidAsync(string resultUid)
+        {
+            return await _ctx.Questions
+                .Include(q => q.Choices)
+                .Include(q => q.Reactions)
+                .FirstOrDefaultAsync(q => q.ResultUid == resultUid);
+        }
+
+        #endregion
+        #region Get Choice
+
+        public async Task<Choice> GetChoiceByIdAsync(int choiceId)
+        {
+            return await _ctx.Choices
+                .FirstOrDefaultAsync(c => c.Id == choiceId);
+        }
+
+        #endregion
+        #endregion
+
+        // -----
+
+        #region Ajout en BDD
+
         public async Task<int> AddPollAsync(UserAddPollsVM model)
         {
             var question = new Question
@@ -55,80 +114,6 @@ namespace QuestionReaction.Services
             return question.Id;
         }
 
-        public string AddGuid()
-        {
-            return Guid.NewGuid().ToString().Replace("-", "").ToUpper();
-        }
-
-        public async Task<List<Guest>> GetGuestsByQuestionIdAsync(int questionId)
-        {
-            return await _ctx.Guests
-                .Where(g => g.QuestionId == questionId)
-                .ToListAsync();
-        }
-
-        public async Task<List<Question>> GetQuestionsByGuestMailAsync(string guestMail)
-        {
-            return await _ctx.Guests
-                .Where(g => g.Mail == guestMail)
-                .Select(g => g.Question)
-                .ToListAsync();
-        }
-
-        public async Task<Question> GetQuestionByIdAsync(int questionId)
-        {
-            return await _ctx.Questions
-                .Include(q => q.Reactions)
-                .FirstOrDefaultAsync(q => q.Id == questionId);
-        }
-
-        public async Task<List<Question>> GetQuestionsByGuestAsync(string guestMail)
-        {
-            return await _ctx.Guests
-                .Where(g => g.Mail == guestMail)
-                .Select(g => g.Question)
-                .ToListAsync();
-        }
-
-        public async Task<List<Question>> GetQuestionsByUserIdAsync(int userId)
-        {
-            return await _ctx.Users
-                .Where(u => u.Id == userId)
-                .Select(u => u.Questions)
-                .FirstOrDefaultAsync();
-        }
-
-        public async Task DisableQuestionAsync(string disableUid)
-        {
-            var question = await _ctx.Questions
-                .FirstOrDefaultAsync(q => q.DisableUid == disableUid);
-            question.IsActive = false;
-            _ctx.Questions.Update(question);
-            await _ctx.SaveChangesAsync();
-        }
-
-        public async Task<Question> GetQuestionByVoteUidAsync(string voteUid)
-        {
-            return await _ctx.Questions
-                .Include(q => q.Choices)
-                .Include(q => q.Reactions)
-                .FirstOrDefaultAsync(q => q.VoteUid == voteUid);
-        }
-
-        public async Task<Question> GetQuestionByResultUidAsync(string resultUid)
-        {
-            return await _ctx.Questions
-                .Include(q => q.Choices)
-                .Include(q => q.Reactions)
-                .FirstOrDefaultAsync(q => q.ResultUid == resultUid);
-        }
-
-        public async Task<Choice> GetChoiceByIdAsync(int choiceId)
-        {
-            return await _ctx.Choices
-                .FirstOrDefaultAsync(c => c.Id == choiceId);
-        }
-
         public async Task<string> AddReactionsAsync(List<int> choicesId, int userId)
         {
             var choices = choicesId
@@ -153,6 +138,26 @@ namespace QuestionReaction.Services
             await _ctx.SaveChangesAsync();
 
             return question.ResultUid;
+        }
+
+        #endregion
+
+        // -----
+
+        #region Autres
+
+        public string AddGuid()
+        {
+            return Guid.NewGuid().ToString().Replace("-", "").ToUpper();
+        }
+
+        public async Task DisableQuestionAsync(string disableUid)
+        {
+            var question = await _ctx.Questions
+                .FirstOrDefaultAsync(q => q.DisableUid == disableUid);
+            question.IsActive = false;
+            _ctx.Questions.Update(question);
+            await _ctx.SaveChangesAsync();
         }
 
         public async Task<List<Choice>> SortChoicesByVoteNumberAsync(int questionId)
@@ -180,5 +185,8 @@ namespace QuestionReaction.Services
 
             return result;
         }
+
+        #endregion
+
     }
 }

@@ -9,6 +9,11 @@ namespace QuestionReaction.Services.Interfaces
 {
     public interface IUserService
     {
+        /// <summary>
+        /// Renvoi un utilisateur par son id
+        /// </summary>
+        /// <param name="userId">id de l'utilisateur</param>
+        /// <returns>Task de User</returns>
         Task<User> GetUserByIdAsync(int userId);
     }
 }
