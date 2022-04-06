@@ -32,6 +32,8 @@
         <label class="text-danger m-auto display-6">Attention ! Ne partagez pas le lien de
             désactivation du sondage !</label>
     </div>
+    @{var d = "";
+    if(!Model.IsActive) { d = "disabled"; }}
     <form asp-action="" method="post">
         <div class="form-group my-3 text-center">
             <label class="col-form-label col-form-label-lg">Seuls les utilisateurs invités au sondage pourront y participer.
@@ -40,17 +42,17 @@
             <span asp-validation-for="GuestsMailsString" class="text-danger"></span>
         </div>
         <div class="form-row">
-            <button type="submit" class="btn btn-dark btn-lg m-auto">Inviter</button>
+            <button type="submit" class="btn btn-dark btn-lg m-auto" @d>Inviter</button>
         </div>
     </form>
     <div class="form-row align-content-between my-3 col-9 ml-auto">
         <form asp-action="Result" method="get" class="m-auto m-2">
-            <input asp-for=ResultUid text=@Model.ResultUid type="hidden" />
+            <input asp-for=ResultUid value=@Model.ResultUid type="hidden" />
             <button type="submit" class="btn btn-dark btn-lg">Voir les résultats</button>
         </form>
         <form asp-action="Disable" method="get" class="m-auto m-2">
-            <input asp-for=DisableUid text=@Model.DisableUid type="hidden" />
-            <button type="submit" class="btn btn-danger btn-lg">Désactiver</button>
+            <input asp-for=DisableUid value=@Model.DisableUid type="hidden" />
+            <button type="submit" class="btn btn-danger btn-lg" @d>Désactiver</button>
         </form>
     </div>
 </div>
