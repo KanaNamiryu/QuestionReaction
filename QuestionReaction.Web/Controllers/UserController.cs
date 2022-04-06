@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace QuestionReaction.Web.Controllers
 {
     [Authorize]
-    public class UserController: Controller
+    public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
         private readonly IPollService _pollService;
@@ -126,25 +126,34 @@ namespace QuestionReaction.Web.Controllers
         public async Task<IActionResult> Vote(string voteUid)
         {
             var question = await _pollService.GetQuestionByVoteUidAsync(voteUid);
-            var userMail = _userService.GetUserByIdAsync(_currentUserId).Result.Mail;
+            var user = await _userService.GetUserByIdAsync(_currentUserId);
 
-            if (await _ctx.Guests
-                .Where(g => g.Mail == userMail)
-                .Where(g => g.Question == question)
-                .SingleAsync() == null) // le mail de l'utilisateur n'est pas dans la liste des invités
+            var alreadyVoted = await _pollService.AsAlreadyVotedAsync(_currentUserId, question.Id);
+
+            if (!question.IsActive || alreadyVoted) // si sondage desactivé OU utilisateur à deja voté → redirection vers les resultats
             {
-                return RedirectToAction(nameof(ErrorNotInvited));
+                return RedirectToAction(nameof(Result), new { resultUid = question.ResultUid });
             }
-            else // l'utilisateur est invité et peut donc voter
+            else
             {
-                var model = new VoteVM()
+                if (await _ctx.Guests
+                   .Where(g => g.Mail == user.Mail)
+                   .Where(g => g.Question == question)
+                   .SingleAsync() == null) // le mail de l'utilisateur n'est pas dans la liste des invités
                 {
-                    Question = question,
-                    VoteNumber = question.Reactions
-                        .Where(r => r.QuestionId == question.Id)
-                        .Count()
-                };
-                return View(model);
+                    return RedirectToAction(nameof(ErrorNotInvited));
+                }
+                else // l'utilisateur est invité et peut donc voter
+                {
+                    var model = new VoteVM()
+                    {
+                        Question = question,
+                        VoteNumber = question.Reactions
+                            .Where(r => r.QuestionId == question.Id)
+                            .Count()
+                    };
+                    return View(model);
+                }
             }
         }
 
@@ -164,7 +173,7 @@ namespace QuestionReaction.Web.Controllers
             var model = new ResultVM()
             {
                 Question = question,
-                SortedChoices = await _pollService.SortChoicesByVoteNumber(question.Id),
+                SortedChoices = await _pollService.SortChoicesByVoteNumberAsync(question.Id),
                 VoteNumber = question.Reactions
                         .Where(r => r.QuestionId == question.Id)
                         .Count()

@@ -60,7 +60,7 @@ namespace QuestionReaction.Services
             return Guid.NewGuid().ToString().Replace("-", "").ToUpper();
         }
 
-        public async Task<List<Guest>> GetGuestsByQuestionId(int questionId)
+        public async Task<List<Guest>> GetGuestsByQuestionIdAsync(int questionId)
         {
             return await _ctx.Guests
                 .Where(g => g.QuestionId == questionId)
@@ -78,6 +78,7 @@ namespace QuestionReaction.Services
         public async Task<Question> GetQuestionByIdAsync(int questionId)
         {
             return await _ctx.Questions
+                .Include(q => q.Reactions)
                 .FirstOrDefaultAsync(q => q.Id == questionId);
         }
 
@@ -154,7 +155,7 @@ namespace QuestionReaction.Services
             return question.ResultUid;
         }
 
-        public async Task<List<Choice>> SortChoicesByVoteNumber(int questionId)
+        public async Task<List<Choice>> SortChoicesByVoteNumberAsync(int questionId)
         {
             var choices = await _ctx.Choices
                 .Include(c => c.Question)
@@ -169,5 +170,15 @@ namespace QuestionReaction.Services
             return sortedChoices;
         }
 
+        public async Task<bool> AsAlreadyVotedAsync(int userId, int questionId)
+        {
+            var result = false;
+
+            var question = await GetQuestionByIdAsync(questionId);
+
+            result = question.Reactions.Any(r => r.User.Id == userId);
+
+            return result;
+        }
     }
 }

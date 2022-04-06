@@ -25,7 +25,7 @@ namespace QuestionReaction.Services.Interfaces
         /// </summary>
         /// <param name="questionId">id du sondage</param>
         /// <returns>Liste de Guest</returns>
-        Task<List<Guest>> GetGuestsByQuestionId(int questionId);
+        Task<List<Guest>> GetGuestsByQuestionIdAsync(int questionId);
         /// <summary>
         /// 
         /// </summary>
@@ -61,7 +61,8 @@ namespace QuestionReaction.Services.Interfaces
 
         Task<string> AddReactionsAsync(List<int> choicesId, int userId);
 
-        Task<List<Choice>> SortChoicesByVoteNumber(int questionId);
+        Task<List<Choice>> SortChoicesByVoteNumberAsync(int questionId);
 
+        Task<bool> AsAlreadyVotedAsync(int userId, int questionId);
     }
 }
