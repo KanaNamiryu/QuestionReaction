@@ -20,4 +20,8 @@
     <ProjectReference Include="..\QuestionReaction.Services\QuestionReaction.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\ressources\" />
+  </ItemGroup>
+
 </Project>
