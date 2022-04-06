@@ -186,6 +186,11 @@ namespace QuestionReaction.Services
             return result;
         }
 
+        public async Task<bool> VoteUidExistsAsync(string voteUid)
+        {
+            return await _ctx.Questions.AnyAsync(q => q.VoteUid == voteUid);
+        }
+
         #endregion
 
     }

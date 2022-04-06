@@ -73,7 +73,43 @@ namespace QuestionReaction.Web.Controllers
             return View(model);
         }
 
-        
+        /// <summary>
+        /// Voter à un sondage à partir de son uid ou lien
+        /// </summary>
+        /// <param name="model">Model contenant la string entrée par l'utilisateur</param>
+        /// <returns>Redirige l'utilisateur vers la page de vote correspondante si il a entré une chaine de charactere valide</returns>
+        [HttpPost]
+        public async Task<IActionResult> Polls(UserPollsVM model)
+        {
+            var voteUid = " ";
+            if (!string.IsNullOrEmpty(model.VoteUid))
+            {
+                voteUid = model.VoteUid;
+            }
+            var linkBase1 = "https://" + Request.Host.Value + "/User/Vote?voteUid=";
+            var linkBase2 = Request.Host.Value + "/User/Vote?voteUid=";
+            
+            if (voteUid.StartsWith(linkBase1)) // commence par https....
+            {
+                voteUid = voteUid.Remove(0, linkBase1.Length);
+            }
+
+            if (voteUid.StartsWith(linkBase2)) // commence par ....
+            {
+                voteUid = voteUid.Remove(0, linkBase2.Length);
+            }
+
+            var uidExiste = await _pollService.VoteUidExistsAsync(voteUid);
+
+            if (voteUid.Length == 32 && uidExiste) // uid à la bonne longueur ET existe dans la BDD
+            {
+                return RedirectToAction(nameof(Vote), new { voteUid = voteUid });
+            }
+            else // string inconnue
+            {
+                return RedirectToAction(nameof(Polls));
+            }
+        }
 
         /// <summary>
         /// Page de création d'un nouveau sondage
@@ -214,7 +250,12 @@ namespace QuestionReaction.Web.Controllers
                 SortedChoices = await _pollService.SortChoicesByVoteNumberAsync(question.Id),
                 VoteNumber = question.Reactions
                         .Where(r => r.QuestionId == question.Id)
-                        .Count()
+                        .Count(),
+                DistinctUserNumber = question.Reactions
+                    .GroupBy(r => r.UserId)
+                    .Select(g => g.First())
+                    .ToList()
+                    .Count()
             };
             return View(model);
         }

@@ -8,6 +8,7 @@ namespace QuestionReaction.Web.Models
         public Question Question { get; set; }
         public List<Choice> SortedChoices { get; set; }
         public int VoteNumber { get; set; }
+        public int DistinctUserNumber { get; set; }
 
     }
 }
