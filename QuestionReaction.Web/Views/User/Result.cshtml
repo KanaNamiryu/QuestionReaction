@@ -17,5 +17,25 @@
 <hr />
 
 <div class="col-6 m-auto justify-content-around">
-    
+    <table class="table table-sm table-borderless">
+        <tbody class="col-12">
+            @foreach (var choice in Model.SortedChoices)
+            {
+                <tr class="col-12">
+                    <td class="mx-auto col-10">
+                        <label>@choice.Content</label>
+                        <hr style="margin: 0px" />
+                    </td>
+                    <td class="ml-auto mr-0 col-2 text-right">
+                        <label class="display-6">@choice.Reactions.Count <img src="~/lib/ressources/user.png" class="img-icon-size" /></label>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-center">
+        <form asp-action="Polls" class="mx-auto">
+            <button type="submit" class="btn btn-dark btn-lg mx-auto">Retour aux sondages</button>
+        </form>
+    </div>
 </div>
