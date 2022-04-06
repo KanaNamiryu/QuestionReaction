@@ -250,7 +250,12 @@ namespace QuestionReaction.Web.Controllers
                 SortedChoices = await _pollService.SortChoicesByVoteNumberAsync(question.Id),
                 VoteNumber = question.Reactions
                         .Where(r => r.QuestionId == question.Id)
-                        .Count()
+                        .Count(),
+                DistinctUserNumber = question.Reactions
+                    .GroupBy(r => r.UserId)
+                    .Select(g => g.First())
+                    .ToList()
+                    .Count()
             };
             return View(model);
         }
