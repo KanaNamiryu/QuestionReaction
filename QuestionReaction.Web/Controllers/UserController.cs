@@ -28,6 +28,10 @@ namespace QuestionReaction.Web.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Page d'affichage de la liste des sondages créés et rejoins
+        /// </summary>
+        [HttpGet]
         public async Task<IActionResult> Polls()
         {
             var model = new UserPollsVM();
@@ -69,6 +73,11 @@ namespace QuestionReaction.Web.Controllers
             return View(model);
         }
 
+        
+
+        /// <summary>
+        /// Page de création d'un nouveau sondage
+        /// </summary>
         [HttpGet]
         public IActionResult AddPolls()
         {
@@ -76,6 +85,11 @@ namespace QuestionReaction.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Création d'un sondage d'apres les choix de l'utilisateur
+        /// </summary>
+        /// <param name="model">Model contenant les choix de l'utilisateur</param>
+        /// <returns>Redirige vers la page de gestion du sondage</returns>
         [HttpPost]
         public async Task<IActionResult> AddPolls(UserAddPollsVM model)
         {
@@ -97,6 +111,10 @@ namespace QuestionReaction.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Page de gestion d'un sondage
+        /// </summary>
+        /// <param name="pollId">id du sondage</param>
         [HttpGet]
         public async Task<IActionResult> PollsLinks(int pollId)
         {
@@ -115,6 +133,11 @@ namespace QuestionReaction.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Désactivation d'un sondage par son uid de désactivation
+        /// </summary>
+        /// <param name="disableUid">Uid de désactivation du sondage</param>
+        /// <returns>Redirige vers la page de liste des sondages</returns>
         [HttpGet]
         public async Task<IActionResult> Disable(string disableUid)
         {
@@ -122,6 +145,12 @@ namespace QuestionReaction.Web.Controllers
             return RedirectToAction(nameof(Polls));
         }
 
+        /// <summary>
+        /// Page d'ajout de vote à un sondage par son uid de vote
+        /// </summary>
+        /// <param name="voteUid">Uid de vote du sondage</param>
+        /// <returns>Redirige l'utilisateur vers la page des résultats si il a déja voté
+        /// Redirige l'utilisateur vers la page d'erreur spécifique si il n'a pas été invité</returns>
         [HttpGet]
         public async Task<IActionResult> Vote(string voteUid)
         {
@@ -157,6 +186,11 @@ namespace QuestionReaction.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Ajout de vote à un sondage d'apres les choix de l'utilisateur
+        /// </summary>
+        /// <param name="model">Model contenant les choix de l'utilisateur</param>
+        /// <returns>Redirige vers la page de résultat du sondage</returns>
         [HttpPost]
         public async Task<IActionResult> Vote(VoteVM model)
         {
@@ -166,6 +200,10 @@ namespace QuestionReaction.Web.Controllers
             return RedirectToAction(nameof(Result), new { resultUid = resultUid });
         }
 
+        /// <summary>
+        /// Page d'affichage des résultats d'un sondage par son uid de résultat
+        /// </summary>
+        /// <param name="resultUid">Uid de résultat du sondage</param>
         [HttpGet]
         public async Task<IActionResult> Result(string resultUid)
         {
@@ -181,6 +219,9 @@ namespace QuestionReaction.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Page d'erreur indiquant à l'utilisateur qu'il n'est pas invité au sondage auquel il essaye de voter
+        /// </summary>
         public IActionResult ErrorNotInvited()
         {
             return View();
