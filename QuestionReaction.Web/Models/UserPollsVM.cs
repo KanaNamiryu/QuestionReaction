@@ -11,6 +11,7 @@ namespace QuestionReaction.Web.Models
     {
         public List<QuestionsVM> CreatedPolls { get; set; }
         public List<QuestionsVM> JoinedPolls { get; set; }
+        public string VoteUid { get; set; }
 
     }
 

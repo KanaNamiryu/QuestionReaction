@@ -10,7 +10,7 @@
         <h1 class="display-4.5">@Model.Question.Title</h1>
     </div>
     <div class="col-2 text-right align-text-bottom">
-        <label class="display-6">@Model.VoteNumber <img src="~/lib/ressources/user.png" class="img-icon-size" /></label>
+        <label class="display-6">@Model.DistinctUserNumber <img src="~/lib/ressources/user.png" class="img-icon-size" /></label>
     </div>
 </div>
 
@@ -34,7 +34,7 @@
         </tbody>
     </table>
     <div class="text-center">
-        <form asp-action="Polls" class="mx-auto">
+        <form asp-action="Polls" method="get" class="mx-auto">
             <button type="submit" class="btn btn-dark btn-lg mx-auto">Retour aux sondages</button>
         </form>
     </div>

@@ -96,8 +96,8 @@
         <div class="col-6 p-2">
             <div class="d-flex flex-column">
                 <div class="mx-auto"><p>Indiquez le code du sondage à auquel vous voulez réagir</p></div>
-                <form class="form-inline">
-                    <input class="form-control flex-grow-1" placeholder="Code du sondage">
+                <form asp-action="Polls" method="post" class="form-inline">
+                    <input class="form-control flex-grow-1" placeholder="Code du sondage" name="VoteUid">
                     <button type="submit" class="btn btn-dark ml-2">Nouvelle réaction</button>
                 </form>
             </div>
