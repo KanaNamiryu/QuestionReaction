@@ -117,3 +117,8 @@ body {
     font-weight: 330;
     line-height: 1.2;
 }
+
+.img-icon-size {
+    width: 34px;
+    height: 34px;
+}
