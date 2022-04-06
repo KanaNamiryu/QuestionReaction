@@ -106,10 +106,10 @@ namespace QuestionReaction.Services.Interfaces
         /// <returns>Renvoie True si l'utilisateur à déja voté à ce sondage</returns>
         Task<bool> AsAlreadyVotedAsync(int userId, int questionId);
         /// <summary>
-        /// 
+        /// Renvoi un booleen selon l'existance de l'uid de vote dans la BDD
         /// </summary>
-        /// <param name="voteUid"></param>
-        /// <returns></returns>
+        /// <param name="voteUid">Uid de vote</param>
+        /// <returns>Renvoi True si l'uid existe</returns>
         Task<bool> VoteUidExistsAsync(string voteUid);
 
         #endregion
