@@ -60,5 +60,8 @@ namespace QuestionReaction.Services.Interfaces
         Task<Choice> GetChoiceByIdAsync(int choiceId);
 
         Task<string> AddReactionsAsync(List<int> choicesId, int userId);
+
+        Task<List<Choice>> SortChoicesByVoteNumber(int questionId);
+
     }
 }

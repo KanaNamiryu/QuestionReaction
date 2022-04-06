@@ -158,9 +158,18 @@ namespace QuestionReaction.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Result(string resultUid)
+        public async Task<IActionResult> Result(string resultUid)
         {
-            return View();
+            var question = await _pollService.GetQuestionByResultUidAsync(resultUid);
+            var model = new ResultVM()
+            {
+                Question = question,
+                SortedChoices = await _pollService.SortChoicesByVoteNumber(question.Id),
+                VoteNumber = question.Reactions
+                        .Where(r => r.QuestionId == question.Id)
+                        .Count()
+            };
+            return View(model);
         }
 
         public IActionResult ErrorNotInvited()
