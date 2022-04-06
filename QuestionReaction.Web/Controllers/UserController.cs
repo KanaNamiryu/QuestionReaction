@@ -126,30 +126,35 @@ namespace QuestionReaction.Web.Controllers
         public async Task<IActionResult> Vote(string voteUid)
         {
             var question = await _pollService.GetQuestionByVoteUidAsync(voteUid);
-            var model = new VoteVM()
+            var userMail = _userService.GetUserByIdAsync(_currentUserId).Result.Mail;
+
+            if (await _ctx.Guests
+                .Where(g => g.Mail == userMail)
+                .Where(g => g.Question == question)
+                .SingleAsync() == null) // le mail de l'utilisateur n'est pas dans la liste des invités
             {
-                Question = question,
-                VoteNumber = question.Reactions
-                    .Where(r => r.QuestionId == question.Id)
-                    .Count()
-            };
-            return View(model);
+                return RedirectToAction(nameof(ErrorNotInvited));
+            }
+            else // l'utilisateur est invité et peut donc voter
+            {
+                var model = new VoteVM()
+                {
+                    Question = question,
+                    VoteNumber = question.Reactions
+                        .Where(r => r.QuestionId == question.Id)
+                        .Count()
+                };
+                return View(model);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Vote(VoteVM model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            else 
-            {
-                var resultUid = await _pollService.AddReactionsAsync(
-                    model.SelectedChoices.ToList(),
-                    _currentUserId);
-                return RedirectToAction(nameof(Result), new { resultUid = resultUid });
-            }
+            var resultUid = await _pollService.AddReactionsAsync(
+                model.SelectedChoices.ToList(),
+                _currentUserId);
+            return RedirectToAction(nameof(Result), new { resultUid = resultUid });
         }
 
         [HttpGet]
