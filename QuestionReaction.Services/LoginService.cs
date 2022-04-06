@@ -15,16 +15,18 @@ namespace QuestionReaction.Services
 {
     public class LoginService : ILoginService
     {
-        public LoginService(IHttpContextAccessor contextAccessor, AppDbContext ctx, IHashService hashService)
+        private readonly HttpContext _httpContext;
+        private readonly AppDbContext _ctx;
+        private readonly IHashService _hashService;
+        private readonly IUserService _userService;
+
+        public LoginService(IHttpContextAccessor contextAccessor, AppDbContext ctx, IHashService hashService, IUserService userService)
         {
             _httpContext = contextAccessor.HttpContext;
             _ctx = ctx;
             _hashService = hashService;
+            _userService = userService;
         }
-
-        private readonly HttpContext _httpContext;
-        private readonly AppDbContext _ctx;
-        private readonly IHashService _hashService;
 
         public async Task<bool> LoginAsync(string login, string password, bool rememberMe)
         {
@@ -70,7 +72,7 @@ namespace QuestionReaction.Services
             else
             {
                 var userId = _httpContext.User.Claims.Single(u => u.Type == "id").Value;
-                var user = _ctx.Users.Where(u => u.Id == int.Parse(userId)).FirstOrDefault();
+                var user = await _userService.GetUserByIdAsync(int.Parse(userId));
                 return user;
             }
         }

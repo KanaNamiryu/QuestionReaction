@@ -6,29 +6,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace QuestionReaction.Services
 {
     public class RegisterService : IRegisterService
     {
+        private readonly AppDbContext _ctx;
+        private readonly IHashService _hashService;
+
         public RegisterService(AppDbContext ctx, IHashService hashService)
         {
             _ctx = ctx;
             _hashService = hashService;
         }
 
-        private readonly AppDbContext _ctx;
-        private readonly IHashService _hashService;
-
         public async Task<bool> RegisterAsync(string name, string mail, string login, string password)
         {
 
-            // pour check validité mdp → check Regex (site : IHateRegex, regextester)
+            // mdp doit contenir au moins une minuscule, une majuscule, un chiffre, un caractere spécial et faire au moins 8 characteres
+            var regex = new Regex("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})");
+            var match = regex.IsMatch(password);
 
             var l = _ctx.Users.SingleOrDefault(u => u.Login == login);
             var m = _ctx.Users.SingleOrDefault(u => u.Mail == mail);
-            if (l == null && m == null)
+
+            if (l == null && m == null && match) // si le login et le mail n'existent pas dans la BDD ET le password est suffisamment sécurisé
             {
                 if (string.IsNullOrWhiteSpace(name))
                 {
@@ -72,5 +76,6 @@ namespace QuestionReaction.Services
             name = name + random.Next(1000, 10000);
             return name;
         }
+
     }
 }

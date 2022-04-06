@@ -24,24 +24,39 @@ namespace QuestionReaction.Web.Controllers
             _registerService = registerService;
         }
 
-        public async Task<IActionResult> Index()
+        /// <summary>
+        /// Page d'accueil du site
+        /// </summary>
+        public IActionResult Index()
         {
             return View();
         }
 
-        public async Task<IActionResult> Privacy()
+        /// <summary>
+        /// Page d'affichage des privacy
+        /// </summary>
+        public IActionResult Privacy()
         {
             return View();
         }
 
+        /// <summary>
+        /// Page de connexion
+        /// </summary>
+        /// <param name="returnUrl">URL vers lequel l'utilisateur sera redirigé une fois connecté</param>
         [HttpGet]
-        public async Task<IActionResult> Login(string returnUrl)
+        public IActionResult Login(string returnUrl)
         {
             var model = new LoginVM();
             model.ReturnUrl = returnUrl;
             return View(model);
         }
 
+        /// <summary>
+        /// Connexion de l'utilisateur si il à les bon acces
+        /// </summary>
+        /// <param name="model">Model contenant les entrée de l'utilisateur</param>
+        /// <returns>Redirige l'utilisateur vers l'URL demandé, sinon le redirige vers la liste des sondages</returns>
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
@@ -70,20 +85,33 @@ namespace QuestionReaction.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Deconnexion de l'utilisateur
+        /// </summary>
+        /// <returns>Redirige l'utilisateur vers la page d'accueil</returns>
         public async Task<IActionResult> Logout()
         {
             await _loginService.LogoutAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Page d'inscription de l'utilisateur
+        /// </summary>
+        /// <param name="returnUrl">URL vers lequel l'utilisateur sera redirigé une fois inscrit</param>
         [HttpGet]
-        public async Task<IActionResult> Registration(string returnUrl)
+        public IActionResult Registration(string returnUrl)
         {
             var model = new RegisterVM();
             model.ReturnUrl = returnUrl;
             return View(model);
         }
 
+        /// <summary>
+        /// Inscrit l'utilisateur si les informations qu'il a entrées sont correctes
+        /// </summary>
+        /// <param name="model">Model contenant les informations entrées par l'utilisateur</param>
+        /// <returns>Redirige l'utilisateur vers l'URL demandé, sinon le redirige vers la page de connexion</returns>
         [HttpPost]
         public async Task<IActionResult> Registration(RegisterVM model)
         {
@@ -112,8 +140,11 @@ namespace QuestionReaction.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Page d'erreur
+        /// </summary>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> Error()
+        public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
