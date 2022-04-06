@@ -83,11 +83,10 @@ namespace QuestionReaction.Services
 
         public async Task<List<Question>> GetQuestionsByGuestAsync(string guestMail)
         {
-            return _ctx.Guests
+            return await _ctx.Guests
                 .Where(g => g.Mail == guestMail)
-                .ToList()
                 .Select(g => g.Question)
-                .ToList();
+                .ToListAsync();
         }
 
         public async Task<List<Question>> GetQuestionsByUserIdAsync(int userId)
@@ -149,7 +148,7 @@ namespace QuestionReaction.Services
                     Question = question
                 }));
 
-            await _ctx.AddRangeAsync(choices);
+            await _ctx.AddRangeAsync(reactions);
             await _ctx.SaveChangesAsync();
 
             return question.ResultUid;
