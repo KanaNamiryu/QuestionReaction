@@ -10,7 +10,7 @@
         <h1 class="display-4.5">@Model.Question.Title</h1>
     </div>
     <div class="col-2 text-right align-text-bottom">
-        <label class="display-6">15</label>
+        <label class="display-6">@Model.VoteNumber</label>
     </div>
 </div>
 
@@ -20,18 +20,22 @@
     <p>@Model.Question.Description</p>
     <hr />
     <form asp-action=VoteMultipleChoices method="post">
+        <input type="hidden" name="QuestionId" id="QuestionId" value="@Model.Question.Id" />
         <div class="form-group">
-            @{
-                var i = 0;
+            @foreach (var choice in Model.Question.Choices)
+            {
+                <div class="form-check form-row">
+                    @if (Model.Question.MultipleChoices)
+                    {
+                        <input class="form-check-input" type="checkbox" name="SelectedChoices" value="@choice.Id" id="@choice.Id">
+                    }
+                    else
+                    {
+                        <input class="form-check-input" type="radio" name="SelectedChoices" value="@choice.Id" id="@choice.Id">
+                    }
+                    <label class="form-check-label" for="@choice.Id">@choice.Content</label>
+                </div>
             }
-           @foreach (var choice in Model.Question.Choices)
-          {
-            <div class="form-check form-row">
-                <input asp-for=SelectedChoices[i] name="choice@(i+1)" class="form-check-input" type="checkbox">
-                <label asp-for=SelectedChoices[i] class="form-check-label">@choice.Content</label>
-            </div>
-            @(i++)
-          }
         </div>
         <button type="submit" class="btn btn-dark btn-lg ml-auto">Valider</button>
     </form>

@@ -143,11 +143,9 @@ namespace QuestionReaction.Web.Controllers
             var model = new VoteVM()
             {
                 Question = question,
-                ChoicesQuantity = question.Choices.Count,
                 VoteNumber = question.Reactions
                     .Where(r => r.QuestionId == question.Id)
-                    .Count(),
-                SelectedChoices = new string[question.Choices.Count]
+                    .Count()
         };
             return View(model);
         }
@@ -172,7 +170,6 @@ namespace QuestionReaction.Web.Controllers
             var model = new VoteVM()
             {
                 Question = question,
-                ChoicesQuantity = question.Choices.Count,
                 VoteNumber = question.Reactions
                     .Where(r => r.QuestionId == question.Id)
                     .Count()
