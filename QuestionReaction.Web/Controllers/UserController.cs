@@ -126,32 +126,18 @@ namespace QuestionReaction.Web.Controllers
         public async Task<IActionResult> Vote(string voteUid)
         {
             var question = await _pollService.GetQuestionByVoteUid(voteUid);
-            if (question.MultipleChoices) // vote a choix multiple
-            {
-                return RedirectToAction(nameof(VoteMultipleChoices), new { voteUid = voteUid });
-            }
-            else // vote a choix unique
-            {
-                return RedirectToAction(nameof(VoteUniqueChoice), new { voteUid = voteUid });
-            }
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> VoteMultipleChoices(string voteUid)
-        {
-            var question = await _pollService.GetQuestionByVoteUid(voteUid);
             var model = new VoteVM()
             {
                 Question = question,
                 VoteNumber = question.Reactions
                     .Where(r => r.QuestionId == question.Id)
                     .Count()
-        };
+            };
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> VoteMultipleChoices(VoteVM model)
+        public async Task<IActionResult> Vote(VoteVM model)
         {
             if (!ModelState.IsValid)
             {
@@ -161,20 +147,6 @@ namespace QuestionReaction.Web.Controllers
             {
                 return default;
             }
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> VoteUniqueChoice(string voteUid)
-        {
-            var question = await _pollService.GetQuestionByVoteUid(voteUid);
-            var model = new VoteVM()
-            {
-                Question = question,
-                VoteNumber = question.Reactions
-                    .Where(r => r.QuestionId == question.Id)
-                    .Count()
-            };
-            return View(model);
         }
 
         [HttpGet]
