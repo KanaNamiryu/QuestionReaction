@@ -153,5 +153,21 @@ namespace QuestionReaction.Services
 
             return question.ResultUid;
         }
+
+        public async Task<List<Choice>> SortChoicesByVoteNumber(int questionId)
+        {
+            var choices = await _ctx.Choices
+                .Include(c => c.Question)
+                .Include(c => c.Reactions)
+                .Where(c => c.Question.Id == questionId)
+                .ToListAsync();
+
+            var sortedChoices = choices
+                .OrderByDescending(c => c.Reactions.Count)
+                .ToList();
+
+            return sortedChoices;
+        }
+
     }
 }
