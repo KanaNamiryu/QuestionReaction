@@ -122,3 +122,7 @@ body {
     width: 34px;
     height: 34px;
 }
+
+.no-margin {
+    margin: 0px;
+}
