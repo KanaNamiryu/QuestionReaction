@@ -19,7 +19,7 @@ namespace QuestionReaction.Web.Controllers
         private readonly IPollService _pollService;
         private readonly AppDbContext _ctx;
         private readonly IUserService _userService;
-        private int _currentUserId => int.Parse(User.Claims.Single(u => u.Type == "id").Value);
+        private int CurrentUserId => int.Parse(User.Claims.Single(u => u.Type == "id").Value);
         public UserController(ILogger<UserController> logger, IPollService pollService, AppDbContext ctx, IUserService userService)
         {
             _logger = logger;
@@ -36,10 +36,10 @@ namespace QuestionReaction.Web.Controllers
         {
             var model = new UserPollsVM();
 
-            var user = await _userService.GetUserByIdAsync(_currentUserId);
+            var user = await _userService.GetUserByIdAsync(CurrentUserId);
 
             // liste des sondages créés par l'utilisateur
-            model.CreatedPolls = _pollService.GetQuestionsByUserIdAsync(_currentUserId)
+            model.CreatedPolls = _pollService.GetQuestionsByUserIdAsync(CurrentUserId)
                 .Result
                 .Select(p => new QuestionsVM()
                 {
@@ -103,7 +103,7 @@ namespace QuestionReaction.Web.Controllers
 
             if (voteUid.Length == 32 && uidExiste) // uid à la bonne longueur ET existe dans la BDD
             {
-                return RedirectToAction(nameof(Vote), new { voteUid = voteUid });
+                return RedirectToAction(nameof(Vote), new { voteUid });
             }
             else // string inconnue
             {
@@ -117,7 +117,7 @@ namespace QuestionReaction.Web.Controllers
         [HttpGet]
         public IActionResult AddPolls()
         {
-            var model = new UserAddPollsVM() { CurrentUserId = _currentUserId };
+            var model = new UserAddPollsVM() { CurrentUserId = CurrentUserId };
             return View(model);
         }
 
@@ -143,7 +143,7 @@ namespace QuestionReaction.Web.Controllers
                     .ToList();
                 var pollId = await _pollService.AddPollAsync(model);
 
-                return RedirectToAction(nameof(PollsLinks), new { pollId = pollId });
+                return RedirectToAction(nameof(PollsLinks), new { pollId });
             }
         }
 
@@ -192,9 +192,9 @@ namespace QuestionReaction.Web.Controllers
         public async Task<IActionResult> Vote(string voteUid)
         {
             var question = await _pollService.GetQuestionByVoteUidAsync(voteUid);
-            var user = await _userService.GetUserByIdAsync(_currentUserId);
+            var user = await _userService.GetUserByIdAsync(CurrentUserId);
 
-            var alreadyVoted = await _pollService.AsAlreadyVotedAsync(_currentUserId, question.Id);
+            var alreadyVoted = await _pollService.AsAlreadyVotedAsync(CurrentUserId, question.Id);
 
             if (!question.IsActive || alreadyVoted) // si sondage desactivé OU utilisateur à deja voté → redirection vers les resultats
             {
@@ -233,8 +233,8 @@ namespace QuestionReaction.Web.Controllers
         {
             var resultUid = await _pollService.AddReactionsAsync(
                 model.SelectedChoices.ToList(),
-                _currentUserId);
-            return RedirectToAction(nameof(Result), new { resultUid = resultUid });
+                CurrentUserId);
+            return RedirectToAction(nameof(Result), new { resultUid });
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace QuestionReaction.Web.Controllers
                     .GroupBy(r => r.UserId)
                     .Select(g => g.First())
                     .ToList()
-                    .Count()
+                    .Count
             };
             return View(model);
         }

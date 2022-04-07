@@ -222,7 +222,7 @@ namespace QuestionReaction.Services
             return await _ctx.Questions.AnyAsync(q => q.VoteUid == voteUid);
         }
 
-        private bool IsvalidMail(string mail)
+        private static bool IsvalidMail(string mail)
         {
             try
             {
