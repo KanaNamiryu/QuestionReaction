@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace QuestionReaction.Services.Interfaces
 {
+    /// <summary>
+    /// Service de gestion des sondages (ajouts, recuperations de données, ...)
+    /// </summary>
     public interface IPollService
     {
         #region Get

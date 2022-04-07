@@ -12,10 +12,16 @@ using System.Threading.Tasks;
 
 namespace QuestionReaction.Services
 {
+    /// <inheritdoc/>
     public class PollService : IPollService
     {
         private readonly AppDbContext _ctx;
         private readonly IUserService _userService;
+        /// <summary>
+        /// Constructeur du service, appelle les autres services utilisés et initialise ses propriétés
+        /// </summary>
+        /// <param name="ctx">Permet la lecture et écriture en base de donnée</param>
+        /// <param name="userService">Permet d'effectuer des actions relatives au utilisateurs</param>
         public PollService(AppDbContext ctx, IUserService userService)
         {
             _ctx = ctx;
@@ -25,6 +31,7 @@ namespace QuestionReaction.Services
         #region Get
         #region Get Question
 
+        /// <inheritdoc/>
         public async Task<Question> GetQuestionByIdAsync(int questionId)
         {
             return await _ctx.Questions
@@ -33,6 +40,7 @@ namespace QuestionReaction.Services
                 .FirstOrDefaultAsync(q => q.Id == questionId);
         }
 
+        /// <inheritdoc/>
         public async Task<List<Question>> GetQuestionsByUserIdAsync(int userId)
         {
             return await _ctx.Users
@@ -41,6 +49,7 @@ namespace QuestionReaction.Services
                 .FirstOrDefaultAsync();
         }
 
+        /// <inheritdoc/>
         public async Task<List<Question>> GetQuestionsByGuestMailAsync(string guestMail)
         {
             return await _ctx.Guests
@@ -49,6 +58,7 @@ namespace QuestionReaction.Services
                 .ToListAsync();
         }
 
+        /// <inheritdoc/>
         public async Task<Question> GetQuestionByVoteUidAsync(string voteUid)
         {
             return await _ctx.Questions
@@ -57,6 +67,7 @@ namespace QuestionReaction.Services
                 .FirstOrDefaultAsync(q => q.VoteUid == voteUid);
         }
 
+        /// <inheritdoc/>
         public async Task<Question> GetQuestionByResultUidAsync(string resultUid)
         {
             return await _ctx.Questions
@@ -68,6 +79,7 @@ namespace QuestionReaction.Services
         #endregion
         #region Get Choice
 
+        /// <inheritdoc/>
         public async Task<Choice> GetChoiceByIdAsync(int choiceId)
         {
             return await _ctx.Choices
@@ -77,6 +89,7 @@ namespace QuestionReaction.Services
         #endregion
         #region Get Reaction
 
+        /// <inheritdoc/>
         public async Task<List<Reaction>> GetReactionsByQuestionIdAsync(int questionId)
         {
             return await _ctx.Reactions
@@ -92,6 +105,7 @@ namespace QuestionReaction.Services
 
         #region Ajout en BDD
 
+        /// <inheritdoc/>
         public async Task<int> AddPollAsync(UserAddPollsVM model)
         {
             var question = new Question
@@ -127,6 +141,7 @@ namespace QuestionReaction.Services
             return question.Id;
         }
 
+        /// <inheritdoc/>
         public async Task<string> AddReactionsAsync(List<int> choicesId, int userId)
         {
             var choices = choicesId
@@ -153,6 +168,7 @@ namespace QuestionReaction.Services
             return question.ResultUid;
         }
 
+        /// <inheritdoc/>
         public async Task AddGuestsAsync(List<string> mails, int questionId)
         {
             var question = await GetQuestionByIdAsync(questionId);
@@ -181,11 +197,13 @@ namespace QuestionReaction.Services
 
         #region Autres
 
+        /// <inheritdoc/>
         public string AddGuid()
         {
             return Guid.NewGuid().ToString().Replace("-", "").ToUpper();
         }
 
+        /// <inheritdoc/>
         public async Task DisableQuestionAsync(string disableUid)
         {
             var question = await _ctx.Questions
@@ -195,6 +213,7 @@ namespace QuestionReaction.Services
             await _ctx.SaveChangesAsync();
         }
 
+        /// <inheritdoc/>
         public async Task<List<Choice>> SortChoicesByVoteNumberAsync(int questionId)
         {
             var choices = await _ctx.Choices
@@ -210,6 +229,7 @@ namespace QuestionReaction.Services
             return sortedChoices;
         }
 
+        /// <inheritdoc/>
         public async Task<bool> AsAlreadyVotedAsync(int userId, int questionId)
         {
             var reactions = await GetReactionsByQuestionIdAsync(questionId);
@@ -217,6 +237,7 @@ namespace QuestionReaction.Services
             return reactions.Any(r => r.User.Id == userId);
         }
 
+        /// <inheritdoc/>
         public async Task<bool> VoteUidExistsAsync(string voteUid)
         {
             return await _ctx.Questions.AnyAsync(q => q.VoteUid == voteUid);
