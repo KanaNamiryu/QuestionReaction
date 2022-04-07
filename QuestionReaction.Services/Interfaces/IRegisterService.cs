@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace QuestionReaction.Services.Interfaces
 {
+    /// <summary>
+    /// Service d'inscription d'un nouvel utilisateur
+    /// </summary>
     public interface IRegisterService
     {
         /// <summary>

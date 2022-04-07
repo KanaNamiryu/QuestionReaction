@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace QuestionReaction.Services.Interfaces
 {
+    /// <summary>
+    /// Service permetant d'effectuer des actions relatives au utilisateurs
+    /// </summary>
     public interface IUserService
     {
         /// <summary>
