@@ -4,7 +4,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4.5">Sondages</h1>
+    <h1 class="display-4_5">Sondages</h1>
 </div>
 
 <hr />
@@ -19,27 +19,23 @@
                         <tbody class="col-12">
                             @foreach (var question in Model.CreatedPolls)
                             {
-                                <tr class="col-12">
-                                    <td class="mx-auto">
+                                <tr class="d-flex">
+                                    <td class="flex-grow-1">
                                         <label>@question.Title</label>
-                                        <hr style="margin: 0px" />
+                                        <hr class="no-margin flex-fill"/>
                                     </td>
-                                    <td class="ml-auto mr-0">
-                                        <form asp-action="Vote" method="get">
+                                    <td class="d-flex">
+                                        <form asp-action="Vote" method="get" class="mr-1">
                                             <input id="voteUid" name="voteUid" value=@question.VoteUid type="hidden" />
                                             @{var d = "";
                                                 if(!question.IsActive) { d = "disabled"; }}
                                             <button type="submit" class="btn btn-dark" @d>Voter</button>
                                         </form>
-                                    </td>
-                                    <td class="mx-0">
-                                        <form asp-action="Result" method="get">
+                                        <form asp-action="Result" method="get" class="mx-1">
                                             <input id="resultUid" name="resultUid" value=@question.ResultUid type="hidden" />
                                             <button type="submit" class="btn btn-dark" >Résultats</button>
                                         </form>
-                                    </td>
-                                    <td class="mx-0">
-                                        <form asp-action="PollsLinks" method="get">
+                                        <form asp-action="PollsLinks" method="get" class="mx-1">
                                             <input id="pollId" name="pollId" value=@question.Id type="hidden" />
                                             <button type="submit" class="btn btn-dark" >Gérer</button>
                                         </form>
@@ -59,21 +55,19 @@
                         <tbody>
                             @foreach (var question in Model.JoinedPolls)
                             {
-                                <tr>
-                                    <td>
+                                <tr class="d-flex">
+                                    <td class="flex-grow-1">
                                         <label>@question.Title</label>
-                                        <hr style="margin: 0px" />
+                                        <hr class="no-margin flex-fill" />
                                     </td>
-                                    <td class="ml-auto mr-0">
-                                        <form asp-action="Vote" method="get">
+                                    <td class="d-flex">
+                                        <form asp-action="Vote" method="get" class="mr-1">
                                             <input id="voteUid" name="voteUid" value=@question.VoteUid type="hidden" />
                                             @{var d = "";
                                                 if(!question.IsActive) { d = "disabled"; }}
                                             <button type="submit" class="btn btn-dark" @d>Voter</button>
                                         </form>
-                                    </td>
-                                    <td class="mx-0">
-                                        <form asp-action="Result" method="get">
+                                        <form asp-action="Result" method="get" class="mx-1">
                                             <input id="resultUid" name="resultUid" value=@question.ResultUid type="hidden" />
                                             <button type="submit" class="btn btn-dark" >Résultats</button>
                                         </form>
