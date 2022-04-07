@@ -22,16 +22,16 @@ namespace QuestionReaction.Services.Models
         #region Choices
         [Required(ErrorMessage = "Veuillez définir les 2 premiers choix au minimum"),
             Display(Name = "Choix 1")]
-        public string Choice1 { get; set; }
+        public string Choice_1 { get; set; }
         [Required(ErrorMessage = "Veuillez définir les 2 premiers choix au minimum"),
             Display(Name = "Choix 2")]
-        public string Choice2 { get; set; }
+        public string Choice_2 { get; set; }
         [Display(Name = "Choix 3")]
-        public string Choice3 { get; set; }
+        public string Choice_3 { get; set; }
         [Display(Name = "Choix 4")]
-        public string Choice4 { get; set; }
+        public string Choice_4 { get; set; }
         [Display(Name = "Choix 5")]
-        public string Choice5 { get; set; }
+        public string Choice_5 { get; set; }
         #endregion
 
         public int CurrentUserId { get; set; }

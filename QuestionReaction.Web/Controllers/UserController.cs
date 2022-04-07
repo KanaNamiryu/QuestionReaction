@@ -137,7 +137,7 @@ namespace QuestionReaction.Web.Controllers
             {
                 model.Choices = new List<string>
                     {
-                        model.Choice1, model.Choice2, model.Choice3, model.Choice4, model.Choice5
+                        model.Choice_1, model.Choice_2, model.Choice_3, model.Choice_4, model.Choice_5
                     }
                     .Where(c => c != null)
                     .ToList();
