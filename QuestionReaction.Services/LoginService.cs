@@ -13,6 +13,7 @@ using QuestionReaction.Data.Interfaces;
 
 namespace QuestionReaction.Services
 {
+    /// <inheritdoc/>
     public class LoginService : ILoginService
     {
         private readonly HttpContext _httpContext;
@@ -20,6 +21,7 @@ namespace QuestionReaction.Services
         private readonly IHashService _hashService;
         private readonly IUserService _userService;
 
+        /// <inheritdoc/>
         public LoginService(IHttpContextAccessor contextAccessor, AppDbContext ctx, IHashService hashService, IUserService userService)
         {
             _httpContext = contextAccessor.HttpContext;
@@ -28,6 +30,7 @@ namespace QuestionReaction.Services
             _userService = userService;
         }
 
+        /// <inheritdoc/>
         public async Task<bool> LoginAsync(string login, string password, bool rememberMe)
         {
             // check du login + mdp
@@ -58,11 +61,13 @@ namespace QuestionReaction.Services
             return false;
         }
 
+        /// <inheritdoc/>
         public async Task LogoutAsync()
         {
             await _httpContext.SignOutAsync();
         }
 
+        /// <inheritdoc/>
         public async Task<User> GetCurrentUserAsync()
         {
             if (_httpContext.User.Claims.FirstOrDefault() == null)

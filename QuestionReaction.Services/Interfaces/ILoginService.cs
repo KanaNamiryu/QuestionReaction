@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace QuestionReaction.Services.Interfaces
 {
+    /// <summary>
+    /// Service de connexion/deconnexion
+    /// </summary>
     public interface ILoginService
     {
         /// <summary>

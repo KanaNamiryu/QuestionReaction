@@ -11,17 +11,20 @@ using System.Threading.Tasks;
 
 namespace QuestionReaction.Services
 {
+    /// <inheritdoc/>
     public class RegisterService : IRegisterService
     {
         private readonly AppDbContext _ctx;
         private readonly IHashService _hashService;
 
+        /// <inheritdoc/>
         public RegisterService(AppDbContext ctx, IHashService hashService)
         {
             _ctx = ctx;
             _hashService = hashService;
         }
 
+        /// <inheritdoc/>
         public async Task<bool> RegisterAsync(string name, string mail, string login, string password)
         {
 
@@ -58,22 +61,23 @@ namespace QuestionReaction.Services
             return false;
         }
 
+        /// <inheritdoc/>
         public string NameGenerator()
         {
             string name;
             var names1 = new List<string>() { "Chat", "Oiseau", "Poisson", "Sanglier", "Chameau", "Lézard", "Tortue" };
             var names2 = new List<string>() { "Étrange", "Amusant", "Botté", "Rapide", "Multicolore", "Rôti", "Templier" };
-            Random random = new Random();
+            Random random = new();
 
             var i = random.Next(0, 7);
             name = names1[i];
             var j = random.Next(0, 7);
-            name = name + names2[j];
+            name += names2[j];
             if (i == 6 && (j == 1 || j == 2 || j == 5))
             {
-                name = name + "e";
+                name += "e";
             }
-            name = name + random.Next(1000, 10000);
+            name += random.Next(1000, 10000);
             return name;
         }
 
