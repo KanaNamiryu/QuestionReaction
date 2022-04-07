@@ -17,6 +17,9 @@ namespace QuestionReaction.Data.Model
         [DataType(DataType.EmailAddress)]
         public string Mail { get; set; }
 
+        [DataType(DataType.DateTime)]
+        public DateTime Date { get; set; }
+
         #endregion
 
         // clefs etrangeres

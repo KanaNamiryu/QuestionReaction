@@ -131,7 +131,8 @@ namespace QuestionReaction.Services
             var guest = new Guest
             {
                 Mail = userMail,
-                Question = question
+                Question = question,
+                Date = DateTime.Now
             };
             await _ctx.AddAsync(guest);
             await _ctx.SaveChangesAsync();
@@ -183,7 +184,8 @@ namespace QuestionReaction.Services
             .Add(new Guest()
             {
                 Mail = m,
-                Question = question
+                Question = question,
+                Date = DateTime.Now
             }));
 
             await _ctx.AddRangeAsync(guests);
