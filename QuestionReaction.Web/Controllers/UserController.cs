@@ -135,10 +135,7 @@ namespace QuestionReaction.Web.Controllers
             }
             else
             {
-                model.Choices = new List<string>
-                    {
-                        model.Choice_1, model.Choice_2, model.Choice_3, model.Choice_4, model.Choice_5
-                    }
+                model.Choices = model.Choices
                     .Where(c => c != null)
                     .ToList();
                 var pollId = await _pollService.AddPollAsync(model);

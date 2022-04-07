@@ -29,13 +29,13 @@
         <div>
             <label class="col-form-label col-form-label-lg">Liste de choix</label>
             @for (var i = 1; i <= 5; i++)
-           {
-            <div class="form-group">
-                <label asp-for="Choice_@i" class="col-form-label col-form-label-lg"></label>
-                <input asp-for="Choice_@i" class="form-control form-control-lg">
-                <span asp-validation-for="Choice_@i" class="text-danger"></span>
-            </div>
-           }
+            {
+                <div class="form-group">
+                    <label asp-for=Choices class="col-form-label col-form-label-lg">@("Choix "+i)</label>
+                    <input asp-for=Choices class="form-control form-control-lg">
+                    <span asp-validation-for=Choices class="text-danger"></span>
+                </div>
+            }
         </div>
         <div class="form-row ml-auto">
             <button type="button" class="btn btn-dark btn-lg ml-auto">Annuler</button>
