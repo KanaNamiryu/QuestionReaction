@@ -155,6 +155,7 @@ namespace QuestionReaction.Web.Controllers
             var linkBase = "https://" + Request.Host.Value + "/User/";
             var model = new PollsLinksPageVM()
             {
+                Title = poll.Title,
                 VoteLink = linkBase + "Vote?voteUid=" + poll.VoteUid,
                 VoteUid = poll.VoteUid,
                 ResultLink = linkBase + "Result?resultUid=" + poll.ResultUid,
