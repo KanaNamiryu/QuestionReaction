@@ -4,6 +4,7 @@ namespace QuestionReaction.Web.Models
 {
     public class PollsLinksPageVM
     {
+        public string Title { get; set; }
         public string VoteLink { get; set; }
         public string VoteUid { get; set; }
         public string ResultLink { get; set; }
