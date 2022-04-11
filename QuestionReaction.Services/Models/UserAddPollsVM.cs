@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuestionReaction.Services.CustomAnnotation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -33,6 +34,9 @@ namespace QuestionReaction.Services.Models
         /// <summary>
         /// Liste des choix entrée par l'utilisateur
         /// </summary>
+        [Required,
+            MaxLength(100),
+            MinCount(2, ErrorMessage = "Veuillez proposer 2 choix au minimum")]
         public List<string> Choices { get; set; }
 
         /// <summary>

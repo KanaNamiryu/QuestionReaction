@@ -28,14 +28,14 @@
         </div>
         <div>
             <label class="col-form-label col-form-label-lg">Liste de choix</label>
-            @for (var i = 1; i <= 5; i++)
-            {
                 <div class="form-group">
-                    <label asp-for=Choices class="col-form-label col-form-label-lg">@("Choix "+i)</label>
-                    <input asp-for=Choices class="form-control form-control-lg">
-                    <span asp-validation-for=Choices class="text-danger"></span>
+                    <span asp-validation-for=Choices class="text-danger"></span><br />
+                    @for (var i = 1; i <= 5; i++)
+                    {
+                        <label asp-for=Choices class="col-form-label col-form-label-lg">@("Choix "+i)</label>
+                        <input asp-for=Choices class="form-control form-control-lg">
+                    }
                 </div>
-            }
         </div>
         <div class="form-row ml-auto">
             <a asp-action=Polls class="btn btn-dark btn-lg ml-auto">Annuler</a>
