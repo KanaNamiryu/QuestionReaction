@@ -11,6 +11,7 @@ using QuestionReaction.Services;
 using QuestionReaction.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,7 +31,6 @@ namespace QuestionReaction.Web
         {
             services.AddDbContext<AppDbContext>(options =>
             {
-                // default = bdd locale / azure = bdd azure
                 var cn = Configuration.GetConnectionString("azure");
                 options.UseSqlServer(cn)
 #if DEBUG
@@ -83,6 +83,13 @@ namespace QuestionReaction.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            var cultureInfo = new CultureInfo("fr-FR");
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
