@@ -1,8 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Accueil";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @if (User.Claims.FirstOrDefault() == null)
+    {
+        <h1 class="display-4">Bienvenue !</h1>
+    }
+    else
+    {
+        <h1 class="display-4">Bonjour @User.Claims.Single(u => u.Type == "name").Value !</h1>
+    }
+</div>
+
+<hr/>
+
+<div class="align-items-center" style="height:500px">
+    <div class="col-5 m-auto text-center my-auto">
+        <br />
+        <br />
+        <br />
+        <br />
+        <p class="col-form-label-lg">
+            Bonjour et bienvenue sur le site de sondage QuestionReaction !
+            Pour acceder aux sondages, veuillez créer un compte ou vous connecter.
+        </p>
+    </div>
 </div>

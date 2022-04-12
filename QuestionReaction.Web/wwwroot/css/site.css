@@ -69,3 +69,66 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.overflow_ext {
+    overflow: hidden;
+    max-height: 500px;
+    height: 500px;
+}
+
+.overflow_int {
+    overflow-y: auto;
+    max-height: 500px;
+    height: 500px;
+}
+
+.display-4_5 {
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.display-5 {
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.display-5_5 {
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.display-6 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.display-6_5 {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.display-7 {
+    font-size: 0.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.img-icon-size {
+    width: 34px;
+    height: 34px;
+}
+
+.img-logo {
+    width: 50px;
+    height: 39px;
+}
+
+
+.no-margin {
+    margin: 0px;
+}

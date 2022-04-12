@@ -1,0 +1,59 @@
+﻿@model QuestionReaction.Web.Models.PollsLinksPageVM
+@{
+    ViewData["Title"] = "Gestion du sondage";
+}
+
+<div class="text-center">
+    <h1 class="display-4_5">@Model.Title</h1>
+</div>
+
+<hr />
+
+<div class="col-6 m-auto justify-content-around">
+    <div>
+        <h2 class="my-2 display-6">Réagir au sondage</h2>
+        <div class="col-10">
+            <label class="ml-auto display-6.5">@Model.VoteLink</label>
+        </div>
+    </div>
+    <div>
+        <h2 class="my-2 display-6">Résultat du sondage</h2>
+        <div class="col-10">
+            <label class="ml-auto display-6.5">@Model.ResultLink</label>
+        </div>
+    </div>
+    <div>
+        <h2 class="my-2 display-6">Désactiver le sondage</h2>
+        <div class="col-10">
+            <label class="ml-auto display-6.5">@Model.DisableLink</label>
+        </div>
+    </div>
+    <div class="text-center my-2">
+        <label class="text-danger m-auto display-6">Attention ! Ne partagez pas le lien de
+            désactivation du sondage !</label>
+    </div>
+    @{var d = "";
+    if(!Model.IsActive) { d = "disabled"; }}
+    <form asp-action="Invite" method="post">
+        <input type="hidden" name="questionId" id="questionId" value="@Model.QuestionId" />
+        <div class="form-group my-3 text-center">
+            <label class="col-form-label col-form-label-lg">Seuls les utilisateurs invités au sondage pourront y participer.
+                Indiquez ici un ou plusieurs mail séparés par une virgule (Ne pas mettre d'espaces !).</label>
+            <textarea asp-for="GuestsMailsString" class="form-control form-control-lg" rows="3" placeholder="exemple@email.fr,utilisateur@email.com,..."></textarea>
+            <span asp-validation-for="GuestsMailsString" class="text-danger"></span>
+        </div>
+        <div class="form-row">
+            <button type="submit" class="btn btn-dark btn-lg m-auto" @d>Inviter</button>
+        </div>
+    </form>
+    <div class="form-row align-content-between my-3 col-9 ml-auto">
+        <form asp-action="Result" method="get" class="m-auto m-2">
+            <input asp-for=ResultUid value=@Model.ResultUid type="hidden" />
+            <button type="submit" class="btn btn-dark btn-lg">Voir les résultats</button>
+        </form>
+        <form asp-action="Disable" method="get" class="m-auto m-2">
+            <input asp-for=DisableUid value=@Model.DisableUid type="hidden" />
+            <button type="submit" class="btn btn-danger btn-lg" @d>Désactiver</button>
+        </form>
+    </div>
+</div>

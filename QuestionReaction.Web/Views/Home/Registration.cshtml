@@ -1,0 +1,52 @@
+﻿@model QuestionReaction.Web.Models.RegisterVM
+@{
+    ViewData["Title"] = "Inscription";
+}
+
+<div class="text-center">
+    <h1 class="display-4_5">Inscription</h1>
+</div>
+
+<hr />
+
+<div class="col-6 m-auto justify-content-around">
+    <form asp-action="Registration">
+        <input type="hidden" name="returnUrl" id="returnUrl" value="@Model.ReturnUrl" />
+        <div class="form-group">
+            <label asp-for="Name" class="col-form-label-lg"></label>
+            <input asp-for="Name" class="form-control form-control-lg">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Mail" class="col-form-label col-form-label-lg"></label>
+            <input asp-for="Mail" class="form-control form-control-lg">
+            <span asp-validation-for="Mail" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CheckMail" class="col-form-label col-form-label-lg"></label>
+            <input asp-for="CheckMail" class="form-control form-control-lg">
+            <span asp-validation-for="CheckMail" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Login" class="col-form-label col-form-label-lg"></label>
+            <input asp-for="Login" class="form-control form-control-lg">
+            <span asp-validation-for="Login" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password" class="col-form-label col-form-label-lg"></label>
+            <input asp-for="Password" class="form-control form-control-lg">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CheckPassword" class="col-form-label-lg"></label>
+            <input asp-for="CheckPassword" class="form-control form-control-lg">
+            <span asp-validation-for="CheckPassword" class="text-danger"></span>
+        </div>
+
+        <div class="form-row ml-auto">
+            <button type="submit" class="btn btn-dark btn-lg ml-auto">Inscription</button>
+        </div>
+
+    </form>
+</div>
