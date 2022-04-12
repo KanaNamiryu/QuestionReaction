@@ -30,12 +30,13 @@ namespace QuestionReaction.Web
         {
             services.AddDbContext<AppDbContext>(options =>
             {
-                // cn = bdd locale
-                var cn = Configuration.GetConnectionString("cn");
+                // default = bdd locale / azure = bdd azure
+                var cn = Configuration.GetConnectionString("azure");
                 options.UseSqlServer(cn)
 #if DEBUG
-                .EnableSensitiveDataLogging();
+                .EnableSensitiveDataLogging()
 #endif
+                ;
             });
 
             // configurer l'authentification par cookies (un "AddAuthentication" pour toutes les méthodes de connexions (un . par méthode apres))
