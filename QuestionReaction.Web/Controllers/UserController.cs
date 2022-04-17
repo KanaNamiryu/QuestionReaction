@@ -176,7 +176,7 @@ namespace QuestionReaction.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Disable(string disableUid)
         {
-            await _pollService.DisableQuestionAsync(disableUid);
+            await _pollService.DisableQuestionAsync(disableUid, CurrentUserId);
             return RedirectToAction(nameof(Polls));
         }
 

@@ -206,10 +206,14 @@ namespace QuestionReaction.Services
         }
 
         /// <inheritdoc/>
-        public async Task DisableQuestionAsync(string disableUid)
+        public async Task DisableQuestionAsync(string disableUid, int currentUserId)
         {
             var question = await _ctx.Questions
                 .FirstOrDefaultAsync(q => q.DisableUid == disableUid);
+            if (question.UserId != currentUserId)
+            {
+                return;
+            }
             question.IsActive = false;
             _ctx.Questions.Update(question);
             await _ctx.SaveChangesAsync();
