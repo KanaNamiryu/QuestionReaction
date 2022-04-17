@@ -39,16 +39,17 @@ namespace QuestionReaction.Web.Controllers
             var user = await _userService.GetUserByIdAsync(CurrentUserId);
 
             // liste des sondages créés par l'utilisateur
-            model.CreatedPolls = _pollService.GetQuestionsByUserIdAsync(CurrentUserId)
+            model.CreatedPolls = _pollService.GetQuestionsWithReactionsByUserIdAsync(CurrentUserId)
                 .Result
-                .Select(p => new QuestionsVM()
+                .Select(q => new QuestionsVM()
                 {
-                    Id = p.Id,
-                    Title = p.Title,
-                    MultipleChoices = p.MultipleChoices,
-                    VoteUid = p.VoteUid,
-                    ResultUid = p.ResultUid,
-                    IsActive = p.IsActive
+                    Id = q.Id,
+                    Title = q.Title,
+                    MultipleChoices = q.MultipleChoices,
+                    VoteUid = q.VoteUid,
+                    ResultUid = q.ResultUid,
+                    IsActive = q.IsActive,
+                    AsVoted = q.Reactions.Any(r => r.UserId == CurrentUserId)
                 })
                 .ToList();
 
@@ -65,7 +66,8 @@ namespace QuestionReaction.Web.Controllers
                         MultipleChoices = q.MultipleChoices,
                         VoteUid = q.VoteUid,
                         ResultUid = q.ResultUid,
-                        IsActive = q.IsActive
+                        IsActive = q.IsActive,
+                        AsVoted = q.Reactions.Any(r => r.UserId == CurrentUserId)
                     })
                     .ToList();
             }

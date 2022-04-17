@@ -23,6 +23,7 @@ namespace QuestionReaction.Web.Models
         public string VoteUid { get; set; }
         public string ResultUid { get; set; }
         public bool IsActive { get; set; }
+        public bool AsVoted { get; set; }
 
     }
 }

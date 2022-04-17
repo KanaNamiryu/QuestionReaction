@@ -129,12 +129,6 @@ body {
     height: 34px;
 }
 
-.img-logo {
-    width: 50px;
-    height: 39px;
-}
-
-
 .no-margin {
     margin: 0px;
 }
@@ -149,3 +143,22 @@ body {
     height: 17px;
     width: 17px;
 }
+
+/* background colors */
+
+.bg-question {
+    background-color: #FF7B34;
+}
+
+.bg-question-light {
+    background-color: #FFDECC;
+}
+
+.bg-reaction {
+    background-color: #34A0FF;
+}
+
+.bg-reaction-light {
+    background-color: #CCE7FF;
+}
+
