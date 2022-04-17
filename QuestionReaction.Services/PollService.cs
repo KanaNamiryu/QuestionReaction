@@ -43,16 +43,26 @@ namespace QuestionReaction.Services
         /// <inheritdoc/>
         public async Task<List<Question>> GetQuestionsByUserIdAsync(int userId)
         {
-            return await _ctx.Users
-                .Where(u => u.Id == userId)
-                .Select(u => u.Questions)
-                .FirstOrDefaultAsync();
+            return await _ctx.Questions
+                .Where(q => q.UserId == userId)
+                .ToListAsync();
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<Question>> GetQuestionsWithReactionsByUserIdAsync(int userId)
+        {
+            return await _ctx.Questions
+                .Include(q => q.Reactions)
+                .Where(q => q.UserId == userId)
+                .ToListAsync();
         }
 
         /// <inheritdoc/>
         public async Task<List<Question>> GetQuestionsByGuestMailAsync(string guestMail)
         {
             return await _ctx.Guests
+                .Include(g => g.Question)
+                .ThenInclude(q => q.Reactions) // include la liste des reaction de la question qu'on souhaite récupérer
                 .Where(g => g.Mail == guestMail)
                 .Select(g => g.Question)
                 .ToListAsync();
@@ -206,10 +216,14 @@ namespace QuestionReaction.Services
         }
 
         /// <inheritdoc/>
-        public async Task DisableQuestionAsync(string disableUid)
+        public async Task DisableQuestionAsync(string disableUid, int currentUserId)
         {
             var question = await _ctx.Questions
                 .FirstOrDefaultAsync(q => q.DisableUid == disableUid);
+            if (question.UserId != currentUserId)
+            {
+                return;
+            }
             question.IsActive = false;
             _ctx.Questions.Update(question);
             await _ctx.SaveChangesAsync();

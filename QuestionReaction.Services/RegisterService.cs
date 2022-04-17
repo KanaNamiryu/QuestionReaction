@@ -25,17 +25,29 @@ namespace QuestionReaction.Services
         }
 
         /// <inheritdoc/>
-        public async Task<bool> RegisterAsync(string name, string mail, string login, string password)
+        public async Task<int> RegisterAsync(string name, string mail, string login, string password)
         {
 
             // mdp doit contenir au moins une minuscule, une majuscule, un chiffre, un caractere spécial et faire au moins 8 characteres
             var regex = new Regex("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})");
             var match = regex.IsMatch(password);
 
-            var l = _ctx.Users.SingleOrDefault(u => u.Login == login);
-            var m = _ctx.Users.SingleOrDefault(u => u.Mail == mail);
+            var loginCheck = _ctx.Users.Any(u => u.Login == login);
+            var mailCheck = _ctx.Users.Any(u => u.Mail == mail);
 
-            if (l == null && m == null && match) // si le login et le mail n'existent pas dans la BDD ET le password est suffisamment sécurisé
+            if (loginCheck)
+            {
+                return 2; // login deja utilisé
+            }
+            else if (mailCheck)
+            {
+                return 3; // mail deja utilisé
+            }
+            else if (!match)
+            {
+                return 1; // mot de passe non conforme
+            }
+            else
             {
                 if (string.IsNullOrWhiteSpace(name))
                 {
@@ -55,10 +67,9 @@ namespace QuestionReaction.Services
                 await _ctx.AddAsync(user);
                 await _ctx.SaveChangesAsync();
 
-                return true;
+                return 0; // tout est ok
             }
 
-            return false;
         }
 
         /// <inheritdoc/>

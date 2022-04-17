@@ -11,6 +11,7 @@
 
 <div class="col-6 m-auto justify-content-around">
     <form asp-action="AddPolls" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" name="currentUserId" id="currentUserId" value="@Model.CurrentUserId" />
         <div class="form-group">
             <label asp-for="Title" class="col-form-label col-form-label-lg"></label>
@@ -22,8 +23,8 @@
             <textarea asp-for="Description" class="form-control form-control-lg" rows="3"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
-        <div class="form-group form-check form-row">
-            <input asp-for="MutipleChoices" type="checkbox" class="form-check-input">
+        <div class="form-group form-check form-row form-check-lg">
+            <input asp-for="MutipleChoices" type="checkbox" class="form-check-input form-check-input-lg">
             <label asp-for="MutipleChoices" class="form-check-label col-form-label-lg"></label>
         </div>
         <div>
@@ -39,7 +40,7 @@
         </div>
         <div class="form-row ml-auto">
             <a asp-action=Polls class="btn btn-dark btn-lg ml-auto">Annuler</a>
-            <button type="submit" class="btn btn-dark btn-lg ml-1">Valider</button>
+            <button type="submit" class="btn btn-success btn-lg ml-1">Valider</button>
         </div>
     </form>
 </div>

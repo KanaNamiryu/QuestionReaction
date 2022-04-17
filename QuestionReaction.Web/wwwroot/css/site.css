@@ -70,6 +70,8 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
+
+/* overflow */
 .overflow_ext {
     overflow: hidden;
     max-height: 500px;
@@ -82,6 +84,8 @@ body {
     height: 500px;
 }
 
+
+/* other "display" than bootstrap base display */
 .display-4_5 {
     font-size: 3rem;
     font-weight: 400;
@@ -118,17 +122,43 @@ body {
     line-height: 1.2;
 }
 
+
+/* image sizing */
 .img-icon-size {
     width: 34px;
     height: 34px;
 }
 
-.img-logo {
-    width: 50px;
-    height: 39px;
-}
-
-
 .no-margin {
     margin: 0px;
 }
+
+/* large checkbox */
+.form-check-lg {
+    display: flex;
+    align-items: center;
+}
+
+.form-check .form-check-input-lg[type=checkbox] {
+    height: 17px;
+    width: 17px;
+}
+
+/* background colors */
+
+.bg-question {
+    background-color: #FF7B34;
+}
+
+.bg-question-light {
+    background-color: #FFDECC;
+}
+
+.bg-reaction {
+    background-color: #34A0FF;
+}
+
+.bg-reaction-light {
+    background-color: #CCE7FF;
+}
+

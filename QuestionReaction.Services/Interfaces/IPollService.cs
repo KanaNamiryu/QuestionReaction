@@ -29,6 +29,12 @@ namespace QuestionReaction.Services.Interfaces
         /// <returns></returns>
         Task<List<Question>> GetQuestionsByUserIdAsync(int userId);
         /// <summary>
+        /// Renvoi la liste des sondages créé par un utilisateur en incluant les reactions
+        /// </summary>
+        /// <param name="userId">id de l'utilisateur</param>
+        /// <returns></returns>
+        Task<List<Question>> GetQuestionsWithReactionsByUserIdAsync(int userId);
+        /// <summary>
         /// Renvoi la liste des sondages auxquels un mail à été invité
         /// </summary>
         /// <param name="guestMail">mail invité</param>
@@ -110,8 +116,9 @@ namespace QuestionReaction.Services.Interfaces
         /// Désactive un sondage
         /// </summary>
         /// <param name="disableUid">Uid de désactivation du sondage</param>
+        /// <param name="currentUserId">Id de l'utilisateur courant</param>
         /// <returns></returns>
-        Task DisableQuestionAsync(string disableUid);
+        Task DisableQuestionAsync(string disableUid, int currentUserId);
         /// <summary>
         /// Renvoi la liste des choix d'un sondage triés par ordre décroissant de nombre de votes
         /// </summary>

@@ -39,16 +39,17 @@ namespace QuestionReaction.Web.Controllers
             var user = await _userService.GetUserByIdAsync(CurrentUserId);
 
             // liste des sondages créés par l'utilisateur
-            model.CreatedPolls = _pollService.GetQuestionsByUserIdAsync(CurrentUserId)
+            model.CreatedPolls = _pollService.GetQuestionsWithReactionsByUserIdAsync(CurrentUserId)
                 .Result
-                .Select(p => new QuestionsVM()
+                .Select(q => new QuestionsVM()
                 {
-                    Id = p.Id,
-                    Title = p.Title,
-                    MultipleChoices = p.MultipleChoices,
-                    VoteUid = p.VoteUid,
-                    ResultUid = p.ResultUid,
-                    IsActive = p.IsActive
+                    Id = q.Id,
+                    Title = q.Title,
+                    MultipleChoices = q.MultipleChoices,
+                    VoteUid = q.VoteUid,
+                    ResultUid = q.ResultUid,
+                    IsActive = q.IsActive,
+                    AsVoted = q.Reactions.Any(r => r.UserId == CurrentUserId)
                 })
                 .ToList();
 
@@ -65,10 +66,15 @@ namespace QuestionReaction.Web.Controllers
                         MultipleChoices = q.MultipleChoices,
                         VoteUid = q.VoteUid,
                         ResultUid = q.ResultUid,
-                        IsActive = q.IsActive
+                        IsActive = q.IsActive,
+                        AsVoted = q.Reactions.Any(r => r.UserId == CurrentUserId)
                     })
                     .ToList();
             }
+
+            // save des polls en cas d'erreur dans le post
+            PollsData.CreatedPolls = model.CreatedPolls;
+            PollsData.JoinedPolls = model.JoinedPolls;
 
             return View(model);
         }
@@ -81,20 +87,29 @@ namespace QuestionReaction.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Polls(UserPollsVM model)
         {
-            var voteUid = " ";
-            if (!string.IsNullOrEmpty(model.VoteUid))
+            // remplissage du model pour le renvoyer correctement en cas d'erreur
+            model.CreatedPolls = PollsData.CreatedPolls;
+            model.JoinedPolls = PollsData.JoinedPolls;
+
+            var voteUid = "";
+            if (string.IsNullOrEmpty(model.VoteUid))
+            {
+                ModelState.AddModelError("", "Veuillez entrer le code du sondage auquel vous voulez réagir");
+                return View(model);
+            }
+            else
             {
                 voteUid = model.VoteUid;
             }
             var linkBase1 = "https://" + Request.Host.Value + "/User/Vote?voteUid=";
             var linkBase2 = Request.Host.Value + "/User/Vote?voteUid=";
             
-            if (voteUid.StartsWith(linkBase1)) // commence par https....
+            if (voteUid.StartsWith(linkBase1)) // commence par l'url avec https
             {
                 voteUid = voteUid.Remove(0, linkBase1.Length);
             }
 
-            if (voteUid.StartsWith(linkBase2)) // commence par ....
+            if (voteUid.StartsWith(linkBase2)) // commence par l'url sans https
             {
                 voteUid = voteUid.Remove(0, linkBase2.Length);
             }
@@ -107,7 +122,8 @@ namespace QuestionReaction.Web.Controllers
             }
             else // string inconnue
             {
-                return RedirectToAction(nameof(Polls));
+                ModelState.AddModelError("", "Code non reconnu");
+                return View(model);
             }
         }
 
@@ -176,7 +192,7 @@ namespace QuestionReaction.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Disable(string disableUid)
         {
-            await _pollService.DisableQuestionAsync(disableUid);
+            await _pollService.DisableQuestionAsync(disableUid, CurrentUserId);
             return RedirectToAction(nameof(Polls));
         }
 
