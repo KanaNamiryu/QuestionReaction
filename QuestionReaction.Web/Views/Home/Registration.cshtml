@@ -11,6 +11,7 @@
 
 <div class="col-6 m-auto justify-content-around">
     <form asp-action="Registration">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" name="returnUrl" id="returnUrl" value="@Model.ReturnUrl" />
         <div class="form-group">
             <label asp-for="Name" class="col-form-label-lg"></label>

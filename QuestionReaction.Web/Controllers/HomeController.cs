@@ -130,8 +130,8 @@ namespace QuestionReaction.Web.Controllers
             }
             else
             {
-                bool isRegister = await _registerService.RegisterAsync(model.Name, model.Mail, model.Login, model.Password);
-                if (isRegister)
+                int isRegister = await _registerService.RegisterAsync(model.Name, model.Mail, model.Login, model.Password);
+                if (isRegister == 0) // si pas d'erreur a l'inscription
                 {
                     if (!string.IsNullOrEmpty(model.ReturnUrl))
                     {
@@ -144,6 +144,21 @@ namespace QuestionReaction.Web.Controllers
                 }
                 else
                 {
+                    switch (isRegister)
+                    {
+                        case 1:
+                            ModelState.AddModelError("", "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial");
+                            break;
+                        case 2:
+                            ModelState.AddModelError("", "Cet identifiant est déjà utilisé");
+                            break;
+                        case 3:
+                            ModelState.AddModelError("", "Cette adresse mail est déjà utilisée");
+                            break;
+                        default:
+                            ModelState.AddModelError("", "Une erreur inconnue s'est produite");
+                            break;
+                    }
                     return View(model);
                 }
             }

@@ -11,6 +11,7 @@
 
 <div class="col-6 m-auto justify-content-around">
     <form asp-action="Login">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" name="returnUrl" id="returnUrl" value="@Model.ReturnUrl" />
         <div class="form-group">
             <label asp-for="Login" class="col-form-label col-form-label-lg"></label>
@@ -26,7 +27,6 @@
             <input asp-for="RememberMe" type="checkbox" class="form-check-input">
             <label asp-for="RememberMe" class="form-check-label"></label>
         </div>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-row ml-auto">
             <button type="submit" class="btn btn-dark btn-lg ml-auto">Connexion</button>
         </div>
