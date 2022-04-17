@@ -149,3 +149,22 @@ body {
     height: 17px;
     width: 17px;
 }
+
+/* background colors */
+
+.bg-question {
+    background-color: #FF7B34;
+}
+
+.bg-question-light {
+    background-color: #FFDECC;
+}
+
+.bg-reaction {
+    background-color: #34A0FF;
+}
+
+.bg-reaction-light {
+    background-color: #CCE7FF;
+}
+

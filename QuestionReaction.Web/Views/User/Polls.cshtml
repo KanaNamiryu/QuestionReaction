@@ -14,7 +14,7 @@
         <div class="col-6 p-2">
             <h2 class="display-5.5">Vos sondages</h2>
             <div class="overflow_ext border">
-                <div class="overflow_int">
+                <div class="overflow_int bg-question-light">
                     <table class="table table-sm table-borderless">
                         <tbody class="col-12">
                             @foreach (var question in Model.CreatedPolls)
@@ -30,21 +30,25 @@
                                             @{
                                                 var state = "";
                                                 var text = "Voter";
+                                                var button = "btn-success";
                                                 if(!question.IsActive) 
                                                 {
-                                                    state = "hidden";
+                                                    state = "disabled";
+                                                    text = "Fermé";
+                                                    button = "btn-outline-danger bg-white";
                                                 }
                                                 else if (question.AsVoted)
                                                 {
                                                     state = "disabled";
                                                     text = "À voté";
+                                                    button = "btn-outline-success bg-white";
                                                 } 
                                             }
-                                            <button type="submit" class="btn btn-dark" @state>@text</button>
+                                            <button type="submit" class="btn @button" @state>@text</button>
                                         </form>
                                         <form asp-action="Result" method="get" class="mx-1">
                                             <input id="resultUid" name="resultUid" value=@question.ResultUid type="hidden" />
-                                            <button type="submit" class="btn btn-dark" >Résultats</button>
+                                            <button type="submit" class="btn btn-info" >Résultats</button>
                                         </form>
                                         <form asp-action="PollsLinks" method="get" class="mx-1">
                                             <input id="pollId" name="pollId" value=@question.Id type="hidden" />
@@ -61,7 +65,7 @@
         <div class="col-6 p-2">
             <h2 class="display-5.5">Vos réactions</h2>
             <div class="overflow_ext border">
-                <div class="overflow_int">
+                <div class="overflow_int bg-reaction-light">
                     <table class="table table-sm table-borderless">
                         <tbody>
                             @foreach (var question in Model.JoinedPolls)
@@ -77,21 +81,25 @@
                                             @{
                                                 var state = "";
                                                 var text = "Voter";
+                                                var button = "btn-success";
                                                 if(!question.IsActive) 
                                                 {
-                                                    state = "hidden";
+                                                    state = "disabled";
+                                                    text = "Fermé";
+                                                    button = "btn-outline-danger bg-white";
                                                 }
                                                 else if (question.AsVoted)
                                                 {
                                                     state = "disabled";
                                                     text = "À voté";
+                                                    button = "btn-outline-success bg-white";
                                                 } 
                                             }
-                                            <button type="submit" class="btn btn-dark" @state>@text</button>
+                                            <button type="submit" class="btn @button" @state>@text</button>
                                         </form>
                                         <form asp-action="Result" method="get" class="mx-1">
                                             <input id="resultUid" name="resultUid" value=@question.ResultUid type="hidden" />
-                                            <button type="submit" class="btn btn-dark" >Résultats</button>
+                                            <button type="submit" class="btn btn-info" >Résultats</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -106,7 +114,7 @@
         <div class="col-6 p-2">
             <div class="d-flex flex-column">
                 <div class="mx-auto"><p>Vous pouvez créer vos propres sondages ici !</p></div>
-                <div class="ml-auto"><a class="btn btn-dark" asp-controller="User" asp-action="AddPolls">Nouveau sondage</a></div>
+                <div class="ml-auto"><a class="btn btn-outline-dark" asp-controller="User" asp-action="AddPolls">Nouveau sondage</a></div>
             </div>
         </div>
         <div class="col-6 p-2">
@@ -114,7 +122,7 @@
                 <div class="mx-auto"><p>Indiquez le code du sondage à auquel vous voulez réagir</p></div>
                 <form asp-action="Polls" method="post" class="form-inline">
                     <input class="form-control flex-grow-1" placeholder="Code du sondage" name="VoteUid">
-                    <button type="submit" class="btn btn-dark ml-2">Nouvelle réaction</button>
+                    <button type="submit" class="btn btn-outline-dark ml-2">Nouvelle réaction</button>
                 </form>
             </div>
         </div>
