@@ -47,6 +47,10 @@ namespace QuestionReaction.Web.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
+            if (User.Claims.FirstOrDefault() != null) // si déja connecté
+            {
+                return RedirectToAction(nameof(Index));
+            }
             var model = new LoginVM();
             model.ReturnUrl = returnUrl;
             return View(model);
@@ -102,6 +106,10 @@ namespace QuestionReaction.Web.Controllers
         [HttpGet]
         public IActionResult Registration(string returnUrl)
         {
+            if (User.Claims.FirstOrDefault() != null) // si déja connecté
+            {
+                return RedirectToAction(nameof(Index));
+            }
             var model = new RegisterVM();
             model.ReturnUrl = returnUrl;
             return View(model);
