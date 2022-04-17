@@ -27,9 +27,20 @@
                                     <td class="d-flex">
                                         <form asp-action="Vote" method="get" class="mr-1">
                                             <input id="voteUid" name="voteUid" value=@question.VoteUid type="hidden" />
-                                            @{var d = "";
-                                                if(!question.IsActive) { d = "disabled"; }}
-                                            <button type="submit" class="btn btn-dark" @d>Voter</button>
+                                            @{
+                                                var state = "";
+                                                var text = "Voter";
+                                                if(!question.IsActive) 
+                                                {
+                                                    state = "hidden";
+                                                }
+                                                else if (question.AsVoted)
+                                                {
+                                                    state = "disabled";
+                                                    text = "À voté";
+                                                } 
+                                            }
+                                            <button type="submit" class="btn btn-dark" @state>@text</button>
                                         </form>
                                         <form asp-action="Result" method="get" class="mx-1">
                                             <input id="resultUid" name="resultUid" value=@question.ResultUid type="hidden" />
@@ -63,9 +74,20 @@
                                     <td class="d-flex">
                                         <form asp-action="Vote" method="get" class="mr-1">
                                             <input id="voteUid" name="voteUid" value=@question.VoteUid type="hidden" />
-                                            @{var d = "";
-                                                if(!question.IsActive) { d = "disabled"; }}
-                                            <button type="submit" class="btn btn-dark" @d>Voter</button>
+                                            @{
+                                                var state = "";
+                                                var text = "Voter";
+                                                if(!question.IsActive) 
+                                                {
+                                                    state = "hidden";
+                                                }
+                                                else if (question.AsVoted)
+                                                {
+                                                    state = "disabled";
+                                                    text = "À voté";
+                                                } 
+                                            }
+                                            <button type="submit" class="btn btn-dark" @state>@text</button>
                                         </form>
                                         <form asp-action="Result" method="get" class="mx-1">
                                             <input id="resultUid" name="resultUid" value=@question.ResultUid type="hidden" />
