@@ -84,6 +84,7 @@ namespace QuestionReaction.Web.Controllers
                 }
                 else
                 {
+                    ModelState.AddModelError("", "Identifiant ou mot de passe invalide");
                     return View(model);
                 }
             }
